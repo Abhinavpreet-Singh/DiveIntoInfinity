@@ -107,7 +107,7 @@ ${body.message}
 
     return NextResponse.json({
       success: true,
-      message: "Thank you for reaching out. We have received your inquiry and will review it carefully within 24 to 48 hours.",
+      message: "Thank you for reaching out. We have received your enquiry and will reply within an hour.",
       receivedAt: new Date().toISOString(),
     });
   } catch (error) {

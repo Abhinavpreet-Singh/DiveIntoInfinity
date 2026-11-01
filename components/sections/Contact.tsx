@@ -4,11 +4,14 @@ import React, { useState } from "react";
 import {
   ArrowUpRight,
   Mail,
-  MessageSquare,
+  Phone,
+  CalendarDays,
   CheckCircle2,
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import { Button } from "@/components/ui/Button";
 import { siteConfig } from "@/data/site";
 import { Container } from "@/components/ui/Container";
 import { ParticleField } from "@/components/ui/Atmosphere";
@@ -94,7 +97,7 @@ export function Contact() {
       setStatus("success");
       setSuccessMessage(
         data.message ||
-          "Got it. We read every enquiry ourselves and reply within two working days."
+          `Got it. We read every enquiry ourselves and reply ${siteConfig.responseTime}.`
       );
       setFormData(INITIAL);
     } catch (err: unknown) {
@@ -143,12 +146,25 @@ export function Contact() {
             </h2>
 
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-[var(--muted)]">
-              Tell us what you want to build and roughly when. We reply within two working
-              days, and the first call is a conversation about the problem, not a sales
-              pitch.
+              Tell us what you want to build and roughly when. We reply{" "}
+              {siteConfig.responseTime}, and the first call is a conversation about the
+              problem, not a sales pitch.
             </p>
 
-            <div className="mt-10 space-y-3">
+            <div className="mt-9">
+              <Button
+                href={siteConfig.schedulingUrl}
+                external
+                size="lg"
+                icon={<CalendarDays className="h-4 w-4" />}
+                iconPosition="left"
+              >
+                Schedule a meeting
+              </Button>
+            </div>
+
+            <div className="mt-8 space-y-3">
+              {/* Email */}
               <a
                 href={`mailto:${siteConfig.email}`}
                 className="panel panel-hover group flex items-center gap-4 rounded-2xl p-5"
@@ -167,27 +183,48 @@ export function Contact() {
                 <ArrowUpRight className="h-4 w-4 shrink-0 text-[var(--dim)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </a>
 
-              {siteConfig.whatsapp && (
-                <a
-                  href={`https://wa.me/${siteConfig.whatsapp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="panel panel-hover group flex items-center gap-4 rounded-2xl p-5"
+              {/* Phones, each going straight to a call or a WhatsApp chat */}
+              {siteConfig.phones.map((phone) => (
+                <div
+                  key={phone.dial}
+                  className="panel flex items-center gap-4 rounded-2xl p-5"
                 >
                   <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--line)] text-[var(--ink)]">
-                    <MessageSquare className="h-4 w-4" />
+                    <Phone className="h-4 w-4" />
                   </span>
+
                   <span className="min-w-0 flex-1">
                     <span className="block text-[11px] uppercase tracking-[0.18em] text-[var(--dim)]">
-                      WhatsApp
+                      Call or WhatsApp
                     </span>
-                    <span className="block text-sm text-[var(--ink)]">
-                      Message the studio directly
-                    </span>
+                    <a
+                      href={`tel:${phone.dial}`}
+                      className="link-underline block truncate text-sm text-[var(--ink)]"
+                    >
+                      {phone.display}
+                    </a>
                   </span>
-                  <ArrowUpRight className="h-4 w-4 shrink-0 text-[var(--dim)] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                </a>
-              )}
+
+                  <span className="flex shrink-0 items-center gap-2">
+                    <a
+                      href={`tel:${phone.dial}`}
+                      aria-label={`Call ${phone.display}`}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[var(--muted)] transition-colors duration-300 hover:border-[var(--ink)] hover:text-[var(--ink)]"
+                    >
+                      <Phone className="h-3.5 w-3.5" />
+                    </a>
+                    <a
+                      href={`https://wa.me/${phone.whatsapp}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Message ${phone.display} on WhatsApp`}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] text-[var(--muted)] transition-colors duration-300 hover:border-[var(--ink)] hover:text-[var(--ink)]"
+                    >
+                      <WhatsAppIcon className="h-4 w-4" />
+                    </a>
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="mt-8 flex items-center gap-2.5 text-xs text-[var(--dim)]">
@@ -347,7 +384,7 @@ export function Contact() {
                 </button>
 
                 <p className="text-xs text-[var(--dim)]">
-                  We reply within two working days.
+                  We reply {siteConfig.responseTime}.
                 </p>
               </div>
             </form>

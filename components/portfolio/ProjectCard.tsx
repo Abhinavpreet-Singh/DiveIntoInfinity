@@ -36,7 +36,7 @@ export function ProjectCard({
         </div>
         <div className="flex items-center gap-3">
           <span className="rounded-full border border-[var(--line-strong)] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink)]">
-            Client project
+            {project.kind === "client" ? "Client project" : "In-house product"}
           </span>
           <span className="mono text-[11px] text-[var(--dim)]">{project.year}</span>
         </div>
@@ -49,6 +49,9 @@ export function ProjectCard({
             {project.title}
           </h3>
           <p className="mt-2 text-sm text-[var(--muted)]">{project.category}</p>
+          <p className="mt-3 text-[0.8rem] leading-relaxed text-[var(--dim)]">
+            {project.business}
+          </p>
 
           <p className="mt-5 text-[0.95rem] leading-relaxed text-[var(--body)]">
             {project.summary}

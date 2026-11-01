@@ -1,82 +1,59 @@
 import React from "react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
 /**
- * An abstract per-project schematic, with no fake screenshots. One node per
- * shipped surface, wired to a common core. Ink on paper, like the rest.
+ * A real screenshot of the shipped product, framed with room around it so
+ * nothing is cropped. The whole frame opens the live site. It sits
+ * desaturated so it does not fight the monochrome palette, and returns to
+ * full colour on hover.
  */
 export function ProjectVisual({
   project,
   className,
+  priority = false,
 }: {
   project: Project;
   className?: string;
+  priority?: boolean;
 }) {
   return (
-    <div
+    <a
+      href={project.liveUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open the live ${project.title} site`}
       className={cn(
-        "group/vis relative aspect-[16/11] w-full overflow-hidden rounded-2xl border border-[var(--line)] bg-[var(--bg-2)]",
+        "group/vis block cursor-pointer rounded-2xl border border-[var(--line)] bg-[var(--bg-2)] p-3 transition-[border-color,box-shadow] duration-500 hover:border-[var(--line-strong)] sm:p-4",
         className
       )}
     >
-      <div aria-hidden="true" className="grid-field absolute inset-0" />
+      {/* The shot. 16/10 matches the capture, so it is never cropped. */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--surface)]">
+        <Image
+          src={project.image}
+          alt={`The ${project.title} homepage`}
+          fill
+          priority={priority}
+          sizes="(min-width: 1024px) 45vw, 92vw"
+          className="object-cover object-top grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/vis:scale-[1.015] group-hover/vis:grayscale-0"
+        />
 
-      <svg
-        viewBox="0 0 400 275"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="absolute inset-0 h-full w-full text-[var(--ink)]"
-        aria-hidden="true"
-      >
-        {/* Orbit rings */}
-        <g stroke="currentColor">
-          <circle cx="200" cy="130" r="104" opacity="0.12" strokeDasharray="2 8" />
-          <circle cx="200" cy="130" r="72" opacity="0.2" strokeDasharray="2 6" />
-          <circle
-            cx="200"
-            cy="130"
-            r="40"
-            opacity="0.34"
-            className="origin-[200px_130px] transition-transform duration-700 group-hover/vis:scale-110"
-          />
-        </g>
+        {/* Visit affordance, revealed on hover */}
+        <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg)]/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink)] opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover/vis:opacity-100">
+          Visit site
+          <ArrowUpRight className="h-3 w-3" />
+        </span>
 
-        {/* One spoke per shipped surface */}
-        {project.platforms.map((_, i) => {
-          const angle = (-90 + (360 / project.platforms.length) * i) * (Math.PI / 180);
-          const x = 200 + Math.cos(angle) * 104;
-          const y = 130 + Math.sin(angle) * 104;
-          return (
-            <g key={i}>
-              <line
-                x1="200"
-                y1="130"
-                x2={x}
-                y2={y}
-                stroke="currentColor"
-                strokeWidth="1"
-                opacity="0.3"
-              />
-              <circle
-                cx={x}
-                cy={y}
-                r="5"
-                fill="var(--bg-2)"
-                stroke="currentColor"
-                strokeWidth="1.3"
-              />
-              <circle cx={x} cy={y} r="2" fill="currentColor" />
-            </g>
-          );
-        })}
+        <span className="mono absolute left-3 top-3 rounded-full bg-[var(--bg)]/80 px-2 py-1 text-[10px] tracking-[0.2em] text-[var(--muted)] backdrop-blur-sm">
+          {project.depth}m
+        </span>
+      </div>
 
-        <circle cx="200" cy="130" r="7" fill="currentColor" opacity="0.18" />
-        <circle cx="200" cy="130" r="3" fill="currentColor" />
-      </svg>
-
-      {/* Platform labels */}
-      <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-center gap-2 border-t border-[var(--line)] bg-[var(--surface)] px-4 py-3">
+      {/* Platform labels, below the shot rather than over it */}
+      <div className="flex flex-wrap items-center gap-2 pt-3">
         {project.platforms.map((platform) => (
           <span
             key={platform}
@@ -86,11 +63,6 @@ export function ProjectVisual({
           </span>
         ))}
       </div>
-
-      {/* Depth stamp */}
-      <span className="mono absolute right-4 top-4 text-[10px] tracking-[0.2em] text-[var(--dim)]">
-        {project.depth}m
-      </span>
-    </div>
+    </a>
   );
 }

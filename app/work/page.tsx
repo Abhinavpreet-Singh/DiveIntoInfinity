@@ -8,7 +8,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
 import { ParticleField } from "@/components/ui/Atmosphere";
-import { projects } from "@/data/projects";
+import { projects, clientProjects, inHouseProjects } from "@/data/projects";
 
 export const metadata: Metadata = {
   title: "Work",
@@ -54,9 +54,21 @@ export default function WorkPage() {
         {/* Projects */}
         <section className="relative pb-24 sm:pb-32">
           <Container size="wide">
+            <h2 className="eyebrow mb-8 text-[var(--muted)]">Client work</h2>
             <div className="space-y-8 lg:space-y-10">
-              {projects.map((project, i) => (
+              {clientProjects.map((project, i) => (
                 <ProjectCard key={project.id} project={project} index={i} />
+              ))}
+            </div>
+
+            <h2 className="eyebrow mb-8 mt-20 text-[var(--muted)]">In-house products</h2>
+            <div className="space-y-8 lg:space-y-10">
+              {inHouseProjects.map((project, i) => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  index={clientProjects.length + i}
+                />
               ))}
             </div>
 
@@ -66,7 +78,7 @@ export default function WorkPage() {
                   Your product could be the next one here.
                 </h2>
                 <p className="mt-2 max-w-md text-sm text-[var(--muted)]">
-                  Tell us what you want to build. We reply within two working days.
+                  Tell us what you want to build. We reply within an hour.
                 </p>
               </div>
               <Button

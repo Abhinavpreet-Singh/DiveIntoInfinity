@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectCard } from "@/components/portfolio/ProjectCard";
-import { projects } from "@/data/projects";
+import { clientProjects } from "@/data/projects";
 
 export function SelectedWork() {
   return (
@@ -17,7 +17,7 @@ export function SelectedWork() {
           <Reveal className="max-w-3xl">
             <SectionHeading
               eyebrow="Selected work"
-              depth="120m to 410m"
+              depth="3 client projects"
               title={
                 <>
                   Three products, live and{" "}
@@ -43,7 +43,7 @@ export function SelectedWork() {
         {/* Stacking scroll: each card pins a little lower than the last,
             so the set collects into a deck as you descend. */}
         <div className="mt-14 sm:mt-16">
-          {projects.map((project, i) => (
+          {clientProjects.map((project, i) => (
             <div
               key={project.id}
               className="sticky pb-6 lg:pb-8"

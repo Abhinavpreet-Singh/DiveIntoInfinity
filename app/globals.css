@@ -132,6 +132,18 @@ body {
   }
 }
 
+/* Hero copy and actions, timed off the mark finishing rather than scroll. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes trace-in {
   to {
     opacity: 1;
@@ -196,6 +208,11 @@ body {
   --grain-blend: screen;
 }
 
+.hero-delayed {
+  opacity: 0;
+  animation: hero-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) var(--hero-delay, 0s) forwards;
+}
+
 .trace-line {
   opacity: 0;
   animation:
@@ -249,6 +266,7 @@ body {
 }
 
 .panel-hover:hover {
+  background-color: var(--surface-2);
   border-color: var(--line-strong);
   transform: translateY(-4px);
   box-shadow: 0 28px 60px -34px rgba(20, 18, 11, 0.45);
@@ -371,6 +389,12 @@ body {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  /* No entrance delay when motion is reduced: show it straight away. */
+  .hero-delayed {
+    opacity: 1;
+    animation: none;
   }
 
   /* The hero mark keeps its single travelling line, deliberately. It is slow,

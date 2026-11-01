@@ -66,10 +66,9 @@ export const siteConfig: SiteConfig = {
   navigation: [
     { label: "Work", href: "/#work" },
     { label: "In-house", href: "/#in-house" },
-    { label: "Capabilities", href: "/#capabilities" },
-    { label: "Process", href: "/#process" },
-    { label: "Studio", href: "/#studio" },
+    { label: "Dive profile", href: "/#dive-profile" },
     { label: "FAQ", href: "/#faq" },
+    { label: "Contact", href: "/#contact" },
   ],
   socials: [
     { name: "GitHub", url: "https://github.com/diveintoinfinity", handle: "@diveintoinfinity" },

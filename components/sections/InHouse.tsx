@@ -17,7 +17,6 @@ export function InHouse() {
         <Reveal className="max-w-3xl">
           <SectionHeading
             eyebrow="In-house"
-            depth="What we build for ourselves"
             title={
               <>
                 We are our own{" "}

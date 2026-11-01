@@ -16,15 +16,8 @@ export function SelectedWork() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <Reveal className="max-w-3xl">
             <SectionHeading
-              eyebrow="Selected work"
-              depth="3 client projects"
-              title={
-                <>
-                  Three products, live and{" "}
-                  <span className="lumen-text">running someone&apos;s business</span>.
-                </>
-              }
-              description="Not concepts or studies. Each of these is a shipped product with real users, real payments or real operational load behind it."
+              title="Our client projects"
+              description="Three products we designed, built and still support, each live and running a real business."
             />
           </Reveal>
 

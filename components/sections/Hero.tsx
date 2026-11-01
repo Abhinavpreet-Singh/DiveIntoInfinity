@@ -4,7 +4,7 @@ import { siteConfig } from "@/data/site";
 import { Button } from "@/components/ui/Button";
 import { InfinityHeroGraphic } from "@/components/ui/InfinitySymbol";
 import { ParticleField, LightShafts, Marquee } from "@/components/ui/Atmosphere";
-import { Reveal, SplitText } from "@/components/ui/Reveal";
+import { SplitText } from "@/components/ui/Reveal";
 import { projects } from "@/data/projects";
 
 const TICKER = [
@@ -26,7 +26,7 @@ export function Hero() {
       <ParticleField className="-z-10" />
 
       {/* ---- Centre stage ---- */}
-      <div className="relative flex flex-1 items-center justify-center px-5 pt-28 pb-16 sm:px-8">
+      <div className="relative flex flex-1 items-center justify-center px-5 pt-20 pb-12 sm:px-8 sm:pb-16">
         <div className="relative flex w-full max-w-6xl flex-col items-center text-center">
           {/* The mark, with the wordmark seated at its centre */}
           <div className="relative w-full">
@@ -44,18 +44,22 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Promise. Pulled up into the empty space the mark leaves below
-              its lobes, so the actions stay above the fold. */}
-          <Reveal delay={120}>
-            <p className="-mt-1 max-w-xl text-balance text-base leading-relaxed text-[var(--muted)] sm:-mt-14 sm:text-lg">
-              {siteConfig.tagline} Web platforms, mobile apps and the internal software
-              that keeps them running.
-            </p>
-          </Reveal>
+          {/* Promise. Pulled up into the empty space the mark leaves below its
+              lobes, and timed to land as the mark finishes drawing itself in,
+              rather than waiting for a scroll. */}
+          <p
+            className="hero-delayed -mt-2 max-w-xl text-balance text-base leading-relaxed text-[var(--muted)] sm:-mt-20 sm:text-lg"
+            style={{ "--hero-delay": "3.9s" } as React.CSSProperties}
+          >
+            {siteConfig.tagline} Web platforms, mobile apps and the internal software
+            that keeps them running.
+          </p>
 
           {/* Actions */}
-          <Reveal delay={220}>
-            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+          <div
+            className="hero-delayed mt-6 flex flex-col items-center gap-3 sm:flex-row sm:gap-4"
+            style={{ "--hero-delay": "4.1s" } as React.CSSProperties}
+          >
               <Button href="/#work" size="lg" icon={<ArrowDown className="h-4 w-4" />}>
                 Begin the dive
               </Button>
@@ -69,8 +73,7 @@ export function Hero() {
               >
                 Schedule a meeting
               </Button>
-            </div>
-          </Reveal>
+          </div>
         </div>
       </div>
 

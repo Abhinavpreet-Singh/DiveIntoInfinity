@@ -19,7 +19,7 @@ export function ProjectTile({
   return (
     <article
       className={cn(
-        "panel panel-hover group flex flex-col overflow-hidden rounded-3xl",
+        "panel panel-hover group flex cursor-pointer flex-col overflow-hidden rounded-3xl",
         className
       )}
     >
@@ -37,12 +37,8 @@ export function ProjectTile({
             alt={`The ${project.title} homepage`}
             fill
             sizes="(min-width: 1024px) 30vw, 92vw"
-            className="object-cover object-top grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02] group-hover:grayscale-0"
+            className="object-contain object-top grayscale transition-[filter,transform] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02] group-hover:grayscale-0"
           />
-          <span className="pointer-events-none absolute right-3 top-3 flex items-center gap-1.5 rounded-full border border-[var(--line)] bg-[var(--bg)]/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--ink)] opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-100">
-            Visit
-            <ArrowUpRight className="h-3 w-3" />
-          </span>
         </div>
       </a>
 

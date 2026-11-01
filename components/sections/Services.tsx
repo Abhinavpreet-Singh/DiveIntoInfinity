@@ -8,7 +8,7 @@ import { Reveal } from "@/components/ui/Reveal";
 export function Services() {
   return (
     <section
-      id="capabilities"
+      id="dive-profile"
       className="relative scroll-mt-24 overflow-hidden border-y border-[var(--line-soft)] bg-[var(--bg-2)] py-24 sm:py-32"
     >
       <div aria-hidden="true" className="depth-vignette absolute inset-0" />
@@ -16,8 +16,7 @@ export function Services() {
       <Container size="wide" className="relative">
         <Reveal className="max-w-3xl">
           <SectionHeading
-          eyebrow="Capabilities"
-          depth="What we do"
+          eyebrow="The dive profile"
           title={
             <>
               Everything between the idea and the{" "}

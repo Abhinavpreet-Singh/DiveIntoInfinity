@@ -21,7 +21,7 @@ export function ProjectCard({
   return (
     <article
       className={cn(
-        "panel panel-hover group relative overflow-hidden rounded-3xl",
+        "panel panel-hover group relative cursor-pointer overflow-hidden rounded-3xl",
         className
       )}
     >

@@ -7,27 +7,22 @@ type Theme = "light" | "dark";
 
 const STORAGE_KEY = "di-theme";
 
+/**
+ * Light is the default. Dark only applies when the visitor has turned it on
+ * — the OS colour-scheme preference is deliberately ignored.
+ */
 function resolveTheme(): Theme {
-  const attr = document.documentElement.getAttribute("data-theme");
-  if (attr === "light" || attr === "dark") return attr;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
-/** Re-read whenever the OS preference flips or the attribute changes. */
+/** Re-read whenever the attribute changes. */
 function subscribe(onChange: () => void) {
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
-  media.addEventListener("change", onChange);
-
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["data-theme"],
   });
-
-  return () => {
-    media.removeEventListener("change", onChange);
-    observer.disconnect();
-  };
+  return () => observer.disconnect();
 }
 
 const getServerSnapshot = (): Theme => "light";

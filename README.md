@@ -13,8 +13,9 @@ teams. Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Lucide i
 
 Two colours and the greys between them. **Firi white `#F7F7F4`** and **ink `#14120B`** —
 no hue anywhere in the system. Light and dark are the same design inverted, switched by the
-toggle in the navigation bar (choice stored in `localStorage`, OS preference respected until
-the visitor picks one, no flash on load).
+toggle in the navigation bar. **Light is the default** — dark applies only when a visitor
+turns it on, and the choice is remembered in `localStorage` with no flash on load. The OS
+colour-scheme preference is deliberately ignored.
 
 | Token            | Light     | Dark      | Use                        |
 | ---------------- | --------- | --------- | -------------------------- |

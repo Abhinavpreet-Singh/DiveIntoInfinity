@@ -61,27 +61,9 @@
   color-scheme: dark;
 }
 
-/* Respect the OS before the user has chosen */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #14120b;
-    --bg-2: #100e08;
-    --surface: #1b1912;
-    --surface-2: #201e16;
-    --line: #2c2a22;
-    --line-soft: #221f18;
-    --line-strong: #413e34;
-    --ink: #f7f7f4;
-    --body: #cfcdc4;
-    --muted: #918f86;
-    --dim: #65635b;
-    --inv-bg: #f7f7f4;
-    --inv-ink: #14120b;
-    --grain-opacity: 0.05;
-    --veil: rgba(247, 247, 244, 0.07);
-    color-scheme: dark;
-  }
-}
+/* Dark is opt-in only — the OS preference does not flip the site.
+   Light is the default everywhere; the navigation toggle sets
+   [data-theme="dark"] explicitly. */
 
 /* ---------------- Base ---------------- */
 
@@ -199,12 +181,6 @@ body {
 
 :root[data-theme="dark"] .grain {
   --grain-blend: screen;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .grain {
-    --grain-blend: screen;
-  }
 }
 
 .grid-field {

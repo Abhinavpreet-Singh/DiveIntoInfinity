@@ -11,10 +11,7 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F7F7F4" },
-    { media: "(prefers-color-scheme: dark)", color: "#14120B" },
-  ],
+  themeColor: "#F7F7F4",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -79,9 +76,8 @@ export const metadata: Metadata = {
 const themeScript = `
 (function () {
   try {
-    var stored = localStorage.getItem("di-theme");
-    if (stored === "light" || stored === "dark") {
-      document.documentElement.setAttribute("data-theme", stored);
+    if (localStorage.getItem("di-theme") === "dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
     }
   } catch (e) {}
 })();

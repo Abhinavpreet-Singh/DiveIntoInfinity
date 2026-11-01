@@ -8,8 +8,8 @@ type Theme = "light" | "dark";
 const STORAGE_KEY = "di-theme";
 
 /**
- * Light is the default. Dark only applies when the visitor has turned it on
- * — the OS colour-scheme preference is deliberately ignored.
+ * Light is the default. Dark only applies when the visitor has turned it on.
+ * The OS colour-scheme preference is deliberately ignored.
  */
 function resolveTheme(): Theme {
   return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -36,7 +36,7 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      /* storage can be blocked — the attribute is enough for this session */
+      /* storage can be blocked, and the attribute is enough for this session */
     }
   }, []);
 

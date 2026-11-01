@@ -2,7 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Deterministic particle field — fixed values so server and client render
+ * Deterministic particle field, using fixed values so server and client render
  * identically (no Math.random, no hydration mismatch). Ink on paper.
  */
 const PARTICLES = [
@@ -48,7 +48,7 @@ export function ParticleField({ className }: { className?: string }) {
 }
 
 /**
- * Soft contrast wash behind a band — the monochrome stand-in for light
+ * Soft contrast wash behind a band, the monochrome stand-in for light
  * shafts. Two slow-drifting radial fades, no colour.
  */
 export function LightShafts({ className }: { className?: string }) {
@@ -74,7 +74,7 @@ export function LightShafts({ className }: { className?: string }) {
 }
 
 /**
- * The curved lower edge used under the navigation bar and between bands —
+ * The curved lower edge used under the navigation bar and between bands,
  * a nod to the arc that frames the reference site's header.
  */
 export function CurvedEdge({

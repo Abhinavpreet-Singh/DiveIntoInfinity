@@ -26,8 +26,8 @@ export interface Project {
 
 /**
  * Real client work. Everything listed under `highlights` and `features`
- * describes functionality that is live and visible on the shipped product —
- * no invented traffic, revenue or growth numbers.
+ * describes functionality that is live and visible on the shipped product.
+ * There are no invented traffic, revenue or growth numbers.
  */
 export const projects: Project[] = [
   {
@@ -53,7 +53,7 @@ export const projects: Project[] = [
       "Attendee web platform with city-based discovery",
       "Organiser dashboard (events, tickets, coupons, profile)",
       "Android companion application",
-      "Payment integration — UPI, cards, net banking",
+      "Payment integration: UPI, cards, net banking",
       "Signed QR ticketing & gate check-in flow",
       "WhatsApp + email ticket delivery and reminders",
     ],
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     summary:
       "A cell-biology company's public storefront and the multi-module lab management suite its researchers run day to day.",
     description:
-      "CellsInVitro needed one product that works for two very different visitors: a researcher evaluating assay kits, and a lab team that lives inside the software every day. We built the public research-kit catalogue alongside the Lab Management Suite — cryo inventory, stock, budgets and an electronic lab notebook — under a single authenticated account system.",
+      "CellsInVitro needed one product that works for two very different visitors: a researcher evaluating assay kits, and a lab team that lives inside the software every day. We built the public research-kit catalogue alongside the Lab Management Suite (cryo inventory, stock, budgets and an electronic lab notebook) under a single authenticated account system.",
     challenge:
       "Lab operations were spread across spreadsheets and paper notebooks: cryovial positions, reagent stock levels, grant budgets and experiment logs all lived in separate, fragile places with no shared record.",
     solution:
@@ -101,9 +101,9 @@ export const projects: Project[] = [
       "Information architecture for a dual public/authenticated product",
       "Full visual design system for scientific UI",
       "Research kit catalogue with category filtering",
-      "CryoSearch — rack, box and dewar cell banking inventory",
+      "CryoSearch: rack, box and dewar cell banking inventory",
       "Stock management with low-stock alerting",
-      "Budget management — heads, expenses, grant allocation",
+      "Budget management: heads, expenses, grant allocation",
       "Electronic lab notebook & protocol library",
       "Role-based authentication and dashboard",
     ],
@@ -142,9 +142,9 @@ export const projects: Project[] = [
     summary:
       "A procurement-first catalogue for a scientific equipment supplier selling into schools, research institutions and educational parks.",
     description:
-      "AISTEM supplies lab and STEM equipment to institutions — a buying process that runs on BOQs, tenders and conversations, not shopping carts. We built a catalogue that leads to a qualified enquiry instead of a checkout, backed by an admin CMS so the team publishes products themselves.",
+      "AISTEM supplies lab and STEM equipment to institutions, a buying process that runs on BOQs, tenders and conversations, not shopping carts. We built a catalogue that leads to a qualified enquiry instead of a checkout, backed by an admin CMS so the team publishes products themselves.",
     challenge:
-      "Institutional buyers do not add a thermal cycler to a cart. They arrive with a bill of quantities, need technical specifications, and want a human on the other end — but the business had no digital surface to start that conversation.",
+      "Institutional buyers do not add a thermal cycler to a cart. They arrive with a bill of quantities, need technical specifications, and want a human on the other end. The business had no digital surface to start that conversation.",
     solution:
       "We structured the site around procurement: three equipment categories (school lab, research-oriented, educational parks), a catalogue with dedicated specification pages, and enquiry flows that carry the product context straight into the request. A four-step procurement support path and a three-step planning flow make the buying process legible before anyone picks up the phone. An admin CMS lets the team maintain the catalogue without a developer.",
     deliverables: [

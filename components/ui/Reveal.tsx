@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 /**
  * Scroll-triggered reveal. Elements start translated and transparent
  * (styled by `[data-reveal]` in globals.css) and settle once in view.
- * Reveals once — nothing re-animates on the way back up.
+ * Reveals once, so nothing re-animates on the way back up.
  */
 export function Reveal({
   children,

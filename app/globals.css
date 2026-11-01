@@ -285,6 +285,38 @@ body {
   animation-delay: var(--char-delay, 0ms);
 }
 
+/* ---------------- Infinity orbiters ---------------- */
+
+/* Bodies that travel the infinity path forever. The path below is the same
+   geometry as the hero mark's core stroke, in its own SVG user units. */
+@keyframes orbit {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+
+.orbiter {
+  offset-path: path(
+    "M150 55 C85 55 40 100 40 150 C40 200 85 245 150 245 C215 245 255 185 300 150 C345 115 385 55 450 55 C515 55 560 100 560 150 C560 200 515 245 450 245 C385 245 345 185 300 150 C255 115 215 55 150 55 Z"
+  );
+  offset-rotate: auto;
+  offset-distance: 0%;
+  animation: orbit var(--orbit-duration, 16s) linear infinite;
+  animation-delay: var(--orbit-delay, 0s);
+  will-change: offset-distance;
+}
+
+/* Fallback for engines without offset-path: the bodies simply rest at the
+   crossing point rather than stacking in a corner. */
+@supports not (offset-path: path("M0 0")) {
+  .orbiter {
+    transform: translate(300px, 150px);
+  }
+}
+
 /* ---------------- Links & underlines ---------------- */
 
 .link-underline {
@@ -331,6 +363,7 @@ body {
   }
   .particle,
   .char,
+  .orbiter,
   .marquee-track,
   [class*="animate-"] {
     animation: none !important;

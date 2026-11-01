@@ -34,7 +34,7 @@ export const siteConfig: SiteConfig = {
   tagline: "We build the products our clients are judged by.",
   supportingMessage: "Go deep. Build infinite.",
   description:
-    "DiveintoInfinity is a digital product studio. We design and engineer web platforms, mobile apps and internal software for founders, institutions and research teams — from first wireframe to production.",
+    "DiveintoInfinity is a digital product studio. We design and engineer web platforms, mobile apps and internal software for founders, institutions and research teams, from first wireframe to production.",
   url: "https://diveintoinfinity.com",
   email: "hello@diveintoinfinity.com",
   whatsapp: "15550192834",

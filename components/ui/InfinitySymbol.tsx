@@ -36,12 +36,24 @@ export function InfinitySymbol({
   );
 }
 
+/** Must stay identical to the `.orbiter` offset-path in globals.css. */
 const CORE_PATH =
   "M150 55 C85 55 40 100 40 150 C40 200 85 245 150 245 C215 245 255 185 300 150 C345 115 385 55 450 55 C515 55 560 100 560 150 C560 200 515 245 450 245 C385 245 345 185 300 150 C255 115 215 55 150 55 Z";
 
 /**
- * The hero centrepiece. The core path draws itself on load, a light pulse
- * runs the loop forever, and everything is ink on paper — no hue.
+ * Three bodies in orbit, at different speeds and phases, travelling the
+ * infinity loop forever. Each is a bright core inside a soft halo, with a
+ * tapered wake behind it that rotates to follow the direction of travel.
+ */
+const ORBITERS = [
+  { duration: 18, delay: 0, rest: "10%", r: 4.2, halo: 11, wake: 26, opacity: 1 },
+  { duration: 26, delay: -9, rest: "46%", r: 2.8, halo: 7.5, wake: 18, opacity: 0.6 },
+  { duration: 34, delay: -21, rest: "78%", r: 2, halo: 5.5, wake: 13, opacity: 0.4 },
+];
+
+/**
+ * The hero centrepiece. The core path draws itself in, a light pulse runs
+ * the loop, three bodies orbit it, and everything is ink on paper with no hue.
  */
 export function InfinityHeroGraphic({ className }: { className?: string }) {
   return (
@@ -70,6 +82,18 @@ export function InfinityHeroGraphic({ className }: { className?: string }) {
             <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
             <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
           </linearGradient>
+
+          {/* Wake: solid at the body, vanishing behind it */}
+          <linearGradient id="inf-wake" x1="100%" y1="0%" x2="0%" y2="0%">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.55" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+          </linearGradient>
+
+          <radialGradient id="inf-halo">
+            <stop offset="0%" stopColor="currentColor" stopOpacity="0.32" />
+            <stop offset="60%" stopColor="currentColor" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
+          </radialGradient>
         </defs>
 
         {/* Reference geometry */}
@@ -90,7 +114,7 @@ export function InfinityHeroGraphic({ className }: { className?: string }) {
           opacity="0.22"
         />
 
-        {/* Core — draws itself in */}
+        {/* Core, which draws itself in */}
         <path
           d={CORE_PATH}
           stroke="url(#inf-fade)"
@@ -101,7 +125,7 @@ export function InfinityHeroGraphic({ className }: { className?: string }) {
           className="animate-draw"
         />
 
-        {/* Travelling pulse */}
+        {/* Travelling pulse along the stroke */}
         <path
           d={CORE_PATH}
           stroke="url(#inf-pulse)"
@@ -120,12 +144,44 @@ export function InfinityHeroGraphic({ className }: { className?: string }) {
           opacity="0.3"
         />
 
+        {/* Orbiting bodies */}
+        {ORBITERS.map((o, i) => (
+          <g
+            key={i}
+            className="orbiter"
+            style={
+              {
+                "--orbit-duration": `${o.duration}s`,
+                "--orbit-delay": `${o.delay}s`,
+                // Where each body rests when the animation is off for
+                // reduced-motion visitors; the animation overrides it.
+                offsetDistance: o.rest,
+              } as React.CSSProperties
+            }
+            opacity={o.opacity}
+          >
+            {/* Wake trails behind, along the local -x axis */}
+            <path
+              d={`M0 0 L-${o.wake} -${o.r * 0.72} L-${o.wake} ${o.r * 0.72} Z`}
+              fill="url(#inf-wake)"
+            />
+            <circle r={o.halo} fill="url(#inf-halo)" />
+            <circle r={o.r} fill="currentColor" />
+          </g>
+        ))}
+
         {/* Focal nodes */}
         <circle cx="150" cy="55" r="3" fill="currentColor" />
         <circle cx="450" cy="245" r="3" fill="currentColor" />
 
         {/* Technical annotations */}
-        <g fill="currentColor" opacity="0.4" fontSize="8.5" fontFamily="monospace" letterSpacing="1.2">
+        <g
+          fill="currentColor"
+          opacity="0.4"
+          fontSize="8.5"
+          fontFamily="monospace"
+          letterSpacing="1.2"
+        >
           <text x="20" y="288">DEPTH ∞ · NO FLOOR</text>
           <text x="452" y="26">STUDIO REF · DI-26</text>
         </g>

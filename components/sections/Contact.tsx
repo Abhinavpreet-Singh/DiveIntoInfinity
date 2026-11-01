@@ -71,7 +71,7 @@ export function Contact() {
 
     if (formData.message.trim().length < 10) {
       setStatus("error");
-      setErrorMessage("Tell us a little about the project — at least a sentence.");
+      setErrorMessage("Tell us a little about the project, at least a sentence.");
       return;
     }
 
@@ -129,7 +129,7 @@ export function Contact() {
 
       <Container size="wide" className="relative">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-16">
-          {/* Left — the pitch */}
+          {/* Left: the pitch */}
           <div className="lg:col-span-5">
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-gradient-to-r from-transparent to-[var(--ink)]" />
@@ -144,7 +144,7 @@ export function Contact() {
 
             <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-[var(--muted)]">
               Tell us what you want to build and roughly when. We reply within two working
-              days, and the first call is a conversation about the problem — not a sales
+              days, and the first call is a conversation about the problem, not a sales
               pitch.
             </p>
 
@@ -199,7 +199,7 @@ export function Contact() {
             </div>
           </div>
 
-          {/* Right — the form */}
+          {/* Right: the form */}
           <div className="lg:col-span-7">
             <form
               onSubmit={handleSubmit}

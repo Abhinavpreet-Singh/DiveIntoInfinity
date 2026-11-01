@@ -21,7 +21,7 @@ export function Process() {
               <span className="lumen-text">skipped to hit a date</span>.
             </>
           }
-            description="You always know which stage we are in, what it produces and what it costs — agreed before it starts."
+            description="You always know which stage we are in, what it produces and what it costs, agreed before it starts."
           />
         </Reveal>
 

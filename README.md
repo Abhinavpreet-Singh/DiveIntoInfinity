@@ -1,19 +1,19 @@
-# DiveintoInfinity — Digital Product Studio
+# DiveintoInfinity: Digital Product Studio
 
 **Tagline:** _"We build the products our clients are judged by."_
 **Supporting line:** _"Go deep. Build infinite."_
 
-The studio site for DiveintoInfinity — a digital product studio that designs and engineers
+The studio site for DiveintoInfinity, a digital product studio that designs and engineers
 web platforms, mobile apps and internal software for founders, institutions and research
 teams. Built with Next.js 16 (App Router), TypeScript, Tailwind CSS v4, Lucide icons.
 
 ---
 
-## ✦ Theme — monochrome, light and dark
+## ✦ Theme: monochrome, light and dark
 
-Two colours and the greys between them. **Firi white `#F7F7F4`** and **ink `#14120B`** —
+Two colours and the greys between them. **Firi white `#F7F7F4`** and **ink `#14120B`** ,
 no hue anywhere in the system. Light and dark are the same design inverted, switched by the
-toggle in the navigation bar. **Light is the default** — dark applies only when a visitor
+toggle in the navigation bar. **Light is the default**, dark applies only when a visitor
 turns it on, and the choice is remembered in `localStorage` with no flash on load. The OS
 colour-scheme preference is deliberately ignored.
 
@@ -35,14 +35,15 @@ Utilities in `app/globals.css`: `.panel`, `.panel-hover`, `.grain`, `.grid-field
 
 ### Motion
 
-- **Hero** — the infinity path draws itself in on load, then a light pulse runs the loop
-  forever; the wordmark rises letter by letter (`SplitText`).
-- **Scroll reveal** — `Reveal` uses an IntersectionObserver to settle elements into place
+- **Hero**: the infinity path draws itself in on load, a light pulse runs the stroke, and
+  three bodies orbit the loop on CSS `offset-path` at different speeds and phases, each
+  with a halo and a tapered wake. The wordmark rises letter by letter (`SplitText`).
+- **Scroll reveal**: `Reveal` uses an IntersectionObserver to settle elements into place
   once, with per-item stagger delays.
-- **Stacking work cards** — each case study pins a little lower than the last, so the three
+- **Stacking work cards**: each case study pins a little lower than the last, so the three
   collect into a deck as you descend.
-- **Ticker** — a seamless capability marquee under the hero.
-- **Chrome** — hover sweeps on buttons, growing link underlines, a scroll-depth gauge in
+- **Ticker**: a seamless capability marquee under the hero.
+- **Chrome**: hover sweeps on buttons, growing link underlines, a scroll-depth gauge in
   the navigation bar, and a fine grain overlay across the whole page.
 - Everything respects `prefers-reduced-motion`.
 
@@ -50,16 +51,16 @@ Utilities in `app/globals.css`: `.panel`, `.panel-hover`, `.grain`, `.grid-field
 
 ## ✦ Page structure
 
-1. **Hero** — full-viewport dive entry. The infinity mark is the centrepiece, with the
+1. **Hero**, full-viewport dive entry. The infinity mark is the centrepiece, with the
    wordmark seated at its origin point, light shafts and a rising particle field behind
    it, and an instrument readout strip along the floor.
-2. **Manifesto** — the narrative band: why the studio exists, set in tracked uppercase.
-3. **Selected Work** — three live client products as alternating editorial case rows.
-4. **Capabilities** — six services, from product design through launch and care.
-5. **Process** — the dive profile: Surface → Descend → Pressure → Infinity, on a depth line.
-6. **Studio** — who you work with, plus four operating principles.
-7. **FAQ** — accordion covering scope, pricing, ownership and timelines.
-8. **Contact** — enquiry form posting to `/api/contact`, plus direct email and WhatsApp.
+2. **Manifesto**, the narrative band: why the studio exists, set in tracked uppercase.
+3. **Selected Work**, three live client products as alternating editorial case rows.
+4. **Capabilities**, six services, from product design through launch and care.
+5. **Process**, the dive profile: Surface → Descend → Pressure → Infinity, on a depth line.
+6. **Studio**, who you work with, plus four operating principles.
+7. **FAQ**, accordion covering scope, pricing, ownership and timelines.
+8. **Contact**, enquiry form posting to `/api/contact`, plus direct email and WhatsApp.
 
 Plus `/work` (archive) and `/work/[slug]` (full case studies), `/sitemap.xml`, `/robots.txt`.
 
@@ -68,7 +69,7 @@ Plus `/work` (archive) and `/work/[slug]` (full case studies), `/sitemap.xml`, `
 ## ✦ Client work
 
 All three case studies are real, shipped products. Everything in `highlights` and
-`features` describes functionality visible in the live product — there are **no invented
+`features` describes functionality visible in the live product, there are **no invented
 traffic, revenue or growth numbers** anywhere in `data/projects.ts`.
 
 | Project                 | What it is                                  | Surfaces                      |
@@ -102,10 +103,10 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Copy `.env.example` to `.env.local` and set:
 
-- `CONTACT_EMAIL` — inbox for enquiries
-- `RESEND_API_KEY` — (optional) deliver enquiries by email
-- `CONTACT_WEBHOOK_URL` — (optional) Slack/Discord/Zapier forwarding
-- `NEXT_PUBLIC_SITE_URL` — production domain
+- `CONTACT_EMAIL`, inbox for enquiries
+- `RESEND_API_KEY`, (optional) deliver enquiries by email
+- `CONTACT_WEBHOOK_URL`, (optional) Slack/Discord/Zapier forwarding
+- `NEXT_PUBLIC_SITE_URL`, production domain
 
 ### Build
 
@@ -146,13 +147,13 @@ lib/utils.ts
 
 ## ✦ Editing content
 
-Everything is data-driven — no copy lives in components:
+Everything is data-driven, no copy lives in components:
 
-- **`data/site.ts`** — studio name, email, WhatsApp, location, availability, nav, socials
-- **`data/projects.ts`** — case studies (accent colour, platforms, highlights, features)
-- **`data/services.ts`** — the six capabilities
-- **`data/process.ts`** — the four dive stages
-- **`data/faqs.ts`** — FAQ accordion entries
+- **`data/site.ts`**: studio name, email, WhatsApp, location, availability, nav, socials
+- **`data/projects.ts`**: case studies (platforms, highlights, features)
+- **`data/services.ts`**: the six capabilities
+- **`data/process.ts`**: the four dive stages
+- **`data/faqs.ts`**: FAQ accordion entries
 
 Adding a project automatically adds it to the homepage, the archive, the footer and
 generates its case study page and sitemap entry.

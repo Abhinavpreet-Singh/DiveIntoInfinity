@@ -7,7 +7,7 @@ export const faqs: Faq[] = [
   {
     question: "What exactly do you build?",
     answer:
-      "Digital products. Web platforms with real back-ends — authentication, payments, dashboards, admin tooling — plus the Android apps and internal systems that sit alongside them. If it needs design and engineering to exist, it is in scope. Pure marketing brochures usually are not the best use of us.",
+      "Digital products. Web platforms with real back-ends (authentication, payments, dashboards, admin tooling), plus the Android apps and internal systems that sit alongside them. If it needs design and engineering to exist, it is in scope. Pure marketing brochures usually are not the best use of us.",
   },
   {
     question: "Do you work with early-stage founders or only established businesses?",
@@ -42,6 +42,6 @@ export const faqs: Faq[] = [
   {
     question: "How do we start?",
     answer:
-      "Send us a note describing what you want to build and roughly when. We reply within two working days, and the first call is a conversation about the problem — not a sales pitch.",
+      "Send us a note describing what you want to build and roughly when. We reply within two working days, and the first call is a conversation about the problem, not a sales pitch.",
   },
 ];

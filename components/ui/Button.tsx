@@ -45,7 +45,7 @@ export function Button({
       "bg-[var(--bg)] text-[var(--ink)] font-semibold border border-[var(--line)] hover:border-[var(--ink)]",
   };
 
-  /* A wash that sweeps across on hover — same ink, different weight. */
+  /* A wash that sweeps across on hover: same ink, different weight. */
   const sweep =
     variant === "primary" || variant === "secondary" ? (
       <span

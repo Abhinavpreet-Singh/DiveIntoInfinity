@@ -24,7 +24,7 @@ export function Services() {
               <span className="lumen-text">thing in production</span>.
             </>
           }
-            description="One studio, one accountable team. Strategy, design, engineering and the long tail of care after launch — without handing you off between agencies."
+            description="One studio, one accountable team. Strategy, design, engineering and the long tail of care after launch, without handing you off between agencies."
           />
         </Reveal>
 

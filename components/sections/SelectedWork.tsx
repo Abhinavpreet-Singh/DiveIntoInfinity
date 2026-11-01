@@ -17,7 +17,7 @@ export function SelectedWork() {
           <Reveal className="max-w-3xl">
             <SectionHeading
               eyebrow="Selected work"
-              depth="120m — 410m"
+              depth="120m to 410m"
               title={
                 <>
                   Three products, live and{" "}
@@ -40,7 +40,7 @@ export function SelectedWork() {
           </Reveal>
         </div>
 
-        {/* Stacking scroll — each card pins a little lower than the last,
+        {/* Stacking scroll: each card pins a little lower than the last,
             so the set collects into a deck as you descend. */}
         <div className="mt-14 sm:mt-16">
           {projects.map((project, i) => (

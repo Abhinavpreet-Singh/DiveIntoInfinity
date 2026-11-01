@@ -27,7 +27,7 @@ export function Manifesto() {
 
           <Reveal delay={180}>
             <p className="text-[0.95rem] uppercase leading-[1.85] tracking-[0.14em] text-[var(--muted)] sm:text-base sm:leading-[1.9]">
-              We work the other way. We go down before we build out — into the business, the
+              We work the other way. We go down before we build out, into the business, the
               constraints, the thing that has to be true. Then we design and engineer until
               the product is obvious, fast and genuinely owned by the people who run it.
             </p>
@@ -49,7 +49,7 @@ export function Manifesto() {
         <Reveal delay={160}>
           <p className="mx-auto mt-8 max-w-xl text-center text-[0.95rem] leading-relaxed text-[var(--muted)]">
             That is the whole idea behind the name. Every product we take on, we take
-            further than the brief asked for — and we are still there after launch, because
+            further than the brief asked for, and we are still there after launch, because
             the first release was never the finish line.
           </p>
         </Reveal>

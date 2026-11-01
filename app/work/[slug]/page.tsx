@@ -28,10 +28,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${project.title} — Case study`,
+    title: `${project.title} case study`,
     description: project.summary,
     openGraph: {
-      title: `${project.title} — Case study`,
+      title: `${project.title} case study`,
       description: project.summary,
     },
   };

@@ -13,7 +13,7 @@ export const services: Service[] = [
     title: "Product Design & UI/UX",
     tagline: "Before a line of code, the decisions.",
     description:
-      "We turn a rough ambition into a product someone can actually use — user flows, information architecture, interface design and a component system your team can build on for years.",
+      "We turn a rough ambition into a product someone can actually use: user flows, information architecture, interface design and a component system your team can build on for years.",
     deliverables: [
       "Discovery & product definition",
       "User flows and information architecture",
@@ -28,7 +28,7 @@ export const services: Service[] = [
     title: "Web Platforms & Applications",
     tagline: "Production software, not a brochure.",
     description:
-      "Full-stack web products built on Next.js and TypeScript — authentication, dashboards, payments, multi-role access and the admin surfaces your team runs the business from.",
+      "Full-stack web products built on Next.js and TypeScript: authentication, dashboards, payments, multi-role access and the admin surfaces your team runs the business from.",
     deliverables: [
       "Next.js App Router architecture",
       "Authentication & role-based access",
@@ -58,7 +58,7 @@ export const services: Service[] = [
     title: "Internal Tools & Platform Engineering",
     tagline: "The software nobody sees, that runs everything.",
     description:
-      "Inventory systems, lab management suites, CMS back-ends, operations dashboards — the unglamorous software that replaces a decade of spreadsheets.",
+      "Inventory systems, lab management suites, CMS back-ends, operations dashboards. The unglamorous software that replaces a decade of spreadsheets.",
     deliverables: [
       "Custom CMS and content pipelines",
       "Inventory, stock and record systems",
@@ -73,7 +73,7 @@ export const services: Service[] = [
     title: "AI & Automation",
     tagline: "Useful intelligence, not a chatbot bolted on.",
     description:
-      "We integrate language models and automation where they measurably remove work — search over your own documents, assisted data entry, generated drafts, and the messaging pipelines around them.",
+      "We integrate language models and automation where they measurably remove work: search over your own documents, assisted data entry, generated drafts, and the messaging pipelines around them.",
     deliverables: [
       "LLM integration and prompt architecture",
       "Retrieval over your own content",
@@ -88,7 +88,7 @@ export const services: Service[] = [
     title: "Launch, Scale & Care",
     tagline: "The part most studios skip.",
     description:
-      "Deployment, monitoring, SEO foundations and an ongoing relationship after go-live — because the first version is never the last one.",
+      "Deployment, monitoring, SEO foundations and an ongoing relationship after go-live, because the first version is never the last one.",
     deliverables: [
       "Deployment and environment setup",
       "SEO, metadata and structured data",

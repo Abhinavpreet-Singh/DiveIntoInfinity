@@ -13,7 +13,7 @@ import { projects } from "@/data/projects";
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "Client products designed and engineered by DiveintoInfinity — event ticketing, lab management software and B2B procurement platforms.",
+    "Client products designed and engineered by DiveintoInfinity: event ticketing, lab management software and B2B procurement platforms.",
 };
 
 export default function WorkPage() {
@@ -45,7 +45,7 @@ export default function WorkPage() {
                   <span className="lumen-text">put into production</span>.
                 </>
               }
-              description="A small studio with a short list — every project here is live, owned by its client and still running."
+              description="A small studio with a short list. Every project here is live, owned by its client and still running."
               className="max-w-3xl"
             />
           </Container>

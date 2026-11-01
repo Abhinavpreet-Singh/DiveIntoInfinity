@@ -27,27 +27,16 @@ export function Hero() {
 
       {/* ---- Centre stage ---- */}
       <div className="relative flex flex-1 items-center justify-center px-5 pt-28 pb-16 sm:px-8">
-        <div className="relative flex w-full max-w-5xl flex-col items-center text-center">
-          {/* Eyebrow */}
-          <Reveal>
-            <div className="mb-9 inline-flex items-center gap-2.5 rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 py-1.5">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--ink)] opacity-50" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[var(--ink)]" />
-              </span>
-              <span className="eyebrow text-[var(--muted)]">Digital Product Studio</span>
-            </div>
-          </Reveal>
-
+        <div className="relative flex w-full max-w-6xl flex-col items-center text-center">
           {/* The mark, with the wordmark seated at its centre */}
           <div className="relative w-full">
-            <InfinityHeroGraphic className="mx-auto w-full max-w-[min(100%,46rem)]" />
+            <InfinityHeroGraphic className="mx-auto w-full max-w-[min(100%,62rem)]" />
 
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-[0.6rem] font-semibold uppercase tracking-[0.55em] text-[var(--muted)] sm:text-xs sm:tracking-[0.7em]">
+              <span className="text-[0.625rem] font-semibold uppercase tracking-[0.55em] text-[var(--muted)] sm:text-sm sm:tracking-[0.72em]">
                 <SplitText text="Dive into" delay={260} step={34} />
               </span>
-              <h1 className="mt-1 text-[clamp(2.4rem,11vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.05em] text-[var(--ink)]">
+              <h1 className="mt-1.5 text-[clamp(2.75rem,12.5vw,8rem)] font-semibold leading-[0.88] tracking-[-0.05em] text-[var(--ink)]">
                 <SplitText text="Infinity" delay={620} step={52} />
               </h1>
             </div>
@@ -57,7 +46,7 @@ export function Hero() {
           <Reveal delay={120}>
             <p className="mt-7 max-w-2xl text-balance text-base leading-relaxed text-[var(--muted)] sm:text-lg">
               {siteConfig.tagline} We design and engineer web platforms, mobile apps and
-              the internal software that keeps them running — for founders, institutions
+              the internal software that keeps them running, for founders, institutions
               and research teams.
             </p>
           </Reveal>

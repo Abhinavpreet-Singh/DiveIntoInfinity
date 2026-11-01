@@ -3,7 +3,7 @@ import type { Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
 /**
- * An abstract per-project schematic — no fake screenshots. One node per
+ * An abstract per-project schematic, with no fake screenshots. One node per
  * shipped surface, wired to a common core. Ink on paper, like the rest.
  */
 export function ProjectVisual({

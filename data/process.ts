@@ -14,7 +14,7 @@ export const processSteps: ProcessStep[] = [
     depth: "0m",
     tagline: "We find out what you are actually building.",
     description:
-      "Most projects fail here, quietly. We spend real time on the business model, the users, the constraints and the thing that has to be true for this to be worth building — before anyone opens a design file.",
+      "Most projects fail here, quietly. We spend real time on the business model, the users, the constraints and the thing that has to be true for this to be worth building, before anyone opens a design file.",
     details: [
       "Discovery sessions with the people who own the outcome",
       "User, buyer and operator mapping",
@@ -56,7 +56,7 @@ export const processSteps: ProcessStep[] = [
     depth: "∞",
     tagline: "Launch, then keep going.",
     description:
-      "We deploy, instrument and hand over — with documentation your team can read. Then we stay for the next iteration, because the first release is a starting position, not a finish line.",
+      "We deploy, instrument and hand over, with documentation your team can read. Then we stay for the next iteration, because the first release is a starting position, not a finish line.",
     details: [
       "Deployment, monitoring and environment setup",
       "SEO foundations and structured data",

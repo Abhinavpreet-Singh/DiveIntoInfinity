@@ -19,7 +19,7 @@ const principles = [
   },
   {
     title: "Built to be handed over",
-    body: "Typed, documented, conventional code. Your next developer should be able to read it without calling us — though you can.",
+    body: "Typed, documented, conventional code. Your next developer should be able to read it without calling us, though you can.",
   },
 ];
 
@@ -43,7 +43,7 @@ export function About() {
                   <span className="lumen-text">something to prove</span>.
                 </>
               }
-              description="DiveintoInfinity is a digital product studio. We take on a deliberately small number of builds at a time so that each one gets the senior attention it needs — from the first discovery call to the release after launch."
+              description="DiveintoInfinity is a digital product studio. We take on a deliberately small number of builds at a time so that each one gets the senior attention it needs, from the first discovery call to the release after launch."
             />
 
             <p className="mt-6 max-w-xl text-[0.95rem] leading-relaxed text-[var(--muted)]">

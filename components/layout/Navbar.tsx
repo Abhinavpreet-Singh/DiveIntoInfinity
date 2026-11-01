@@ -49,7 +49,7 @@ export function Navbar() {
             <Link
               href="/"
               className="group flex items-center gap-2.5"
-              aria-label={`${siteConfig.name} — home`}
+              aria-label={`${siteConfig.name} home`}
             >
               <span className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[var(--line)] transition-colors duration-300 group-hover:border-[var(--ink)]">
                 <InfinitySymbol

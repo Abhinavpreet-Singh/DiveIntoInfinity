@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, CalendarDays } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { Button } from "@/components/ui/Button";
 import { InfinityHeroGraphic } from "@/components/ui/InfinitySymbol";
@@ -32,38 +32,42 @@ export function Hero() {
           <div className="relative w-full">
             <InfinityHeroGraphic className="mx-auto w-full max-w-[min(100%,62rem)]" />
 
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-[0.625rem] font-semibold uppercase tracking-[0.55em] text-[var(--muted)] sm:text-sm sm:tracking-[0.72em]">
+            <div className="pointer-events-none absolute inset-0">
+              {/* Seated in the open gap above the crossing, where the two
+                  lobes have already curved away from the centre line. */}
+              <span className="absolute left-1/2 top-[15%] -translate-x-1/2 whitespace-nowrap text-[0.5rem] font-semibold uppercase tracking-[0.42em] text-[var(--muted)] sm:top-[25%] sm:text-[0.6875rem] sm:tracking-[0.62em]">
                 <SplitText text="Dive into" delay={260} step={34} />
               </span>
-              <h1 className="mt-1.5 text-[clamp(2.75rem,12.5vw,8rem)] font-semibold leading-[0.88] tracking-[-0.05em] text-[var(--ink)]">
+              <h1 className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[clamp(2.75rem,12.5vw,8rem)] font-semibold leading-[0.88] tracking-[-0.05em] text-[var(--ink)]">
                 <SplitText text="Infinity" delay={620} step={52} />
               </h1>
             </div>
           </div>
 
-          {/* Promise */}
+          {/* Promise. Pulled up into the empty space the mark leaves below
+              its lobes, so the actions stay above the fold. */}
           <Reveal delay={120}>
-            <p className="mt-7 max-w-2xl text-balance text-base leading-relaxed text-[var(--muted)] sm:text-lg">
-              {siteConfig.tagline} We design and engineer web platforms, mobile apps and
-              the internal software that keeps them running, for founders, institutions
-              and research teams.
+            <p className="-mt-1 max-w-xl text-balance text-base leading-relaxed text-[var(--muted)] sm:-mt-14 sm:text-lg">
+              {siteConfig.tagline} Web platforms, mobile apps and the internal software
+              that keeps them running.
             </p>
           </Reveal>
 
           {/* Actions */}
           <Reveal delay={220}>
-            <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+            <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
               <Button href="/#work" size="lg" icon={<ArrowDown className="h-4 w-4" />}>
                 Begin the dive
               </Button>
               <Button
-                href="/#contact"
+                href={siteConfig.schedulingUrl}
+                external
                 size="lg"
                 variant="secondary"
-                icon={<ArrowUpRight className="h-4 w-4" />}
+                icon={<CalendarDays className="h-4 w-4" />}
+                iconPosition="left"
               >
-                Start a project
+                Schedule a meeting
               </Button>
             </div>
           </Reveal>

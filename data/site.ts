@@ -17,7 +17,10 @@ export interface SiteConfig {
   description: string;
   url: string;
   email: string;
+  schedulingUrl: string;
   whatsapp?: string;
+  /** Public booking link used by the "Schedule a meeting" calls to action. */
+  scheduling: string;
   location: string;
   availability: {
     status: "available" | "limited" | "booked";
@@ -37,7 +40,9 @@ export const siteConfig: SiteConfig = {
     "DiveintoInfinity is a digital product studio. We design and engineer web platforms, mobile apps and internal software for founders, institutions and research teams, from first wireframe to production.",
   url: "https://diveintoinfinity.com",
   email: "hello@diveintoinfinity.com",
+  schedulingUrl: "https://cal.com/abhinavpreet",
   whatsapp: "15550192834",
+  scheduling: "https://cal.com/abhinavpreet",
   location: "India · Working worldwide",
   availability: {
     status: "available",

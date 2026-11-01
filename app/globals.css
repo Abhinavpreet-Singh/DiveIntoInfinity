@@ -15,7 +15,7 @@
   --animate-drift-slow: drift 40s ease-in-out infinite;
   --animate-breathe: breathe 8s ease-in-out infinite;
   --animate-draw: draw 3.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-  --animate-trace: trace 7s linear infinite;
+  --animate-trace: trace 12s linear infinite;
   --animate-marquee: marquee 38s linear infinite;
   --animate-sheen: sheen 3.5s ease-in-out infinite;
 }
@@ -110,18 +110,31 @@ body {
   }
 }
 
+/* Both paths carry pathLength="1000", so these plain numbers are a share of
+   the loop rather than user units, and both values interpolate cleanly. */
 @keyframes draw {
   from {
-    stroke-dashoffset: 2600;
+    stroke-dashoffset: 1000;
   }
   to {
     stroke-dashoffset: 0;
   }
 }
 
+/* Exactly one lap per cycle, so the segment never jumps at the wrap. Opacity
+   is kept out of it, otherwise the line would blink once per lap. */
 @keyframes trace {
+  from {
+    stroke-dashoffset: 0;
+  }
   to {
-    stroke-dashoffset: -2600;
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes trace-in {
+  to {
+    opacity: 1;
   }
 }
 
@@ -181,6 +194,13 @@ body {
 
 :root[data-theme="dark"] .grain {
   --grain-blend: screen;
+}
+
+.trace-line {
+  opacity: 0;
+  animation:
+    trace var(--trace-duration, 12s) linear var(--trace-delay, 0s) infinite,
+    trace-in 0.9s ease-out var(--trace-delay, 0s) forwards;
 }
 
 .grid-field {
@@ -285,38 +305,6 @@ body {
   animation-delay: var(--char-delay, 0ms);
 }
 
-/* ---------------- Infinity orbiters ---------------- */
-
-/* Bodies that travel the infinity path forever. The path below is the same
-   geometry as the hero mark's core stroke, in its own SVG user units. */
-@keyframes orbit {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-
-.orbiter {
-  offset-path: path(
-    "M150 55 C85 55 40 100 40 150 C40 200 85 245 150 245 C215 245 255 185 300 150 C345 115 385 55 450 55 C515 55 560 100 560 150 C560 200 515 245 450 245 C385 245 345 185 300 150 C255 115 215 55 150 55 Z"
-  );
-  offset-rotate: auto;
-  offset-distance: 0%;
-  animation: orbit var(--orbit-duration, 16s) linear infinite;
-  animation-delay: var(--orbit-delay, 0s);
-  will-change: offset-distance;
-}
-
-/* Fallback for engines without offset-path: the bodies simply rest at the
-   crossing point rather than stacking in a corner. */
-@supports not (offset-path: path("M0 0")) {
-  .orbiter {
-    transform: translate(300px, 150px);
-  }
-}
-
 /* ---------------- Links & underlines ---------------- */
 
 .link-underline {
@@ -361,20 +349,31 @@ body {
   html {
     scroll-behavior: auto;
   }
+
+  /* Travel, repetition and entrance effects are dropped entirely. */
   .particle,
-  .char,
-  .orbiter,
   .marquee-track,
-  [class*="animate-"] {
+  .char,
+  .animate-drift,
+  .animate-drift-slow,
+  .animate-breathe,
+  .animate-ping,
+  .animate-pulse {
     animation: none !important;
   }
+
   .char {
     opacity: 1;
     transform: none;
   }
+
   [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
   }
+
+  /* The hero mark keeps its single travelling line, deliberately. It is slow,
+     continuous and never triggered by interaction, so it stays at full speed
+     while every other travelling and entrance effect above is removed. */
 }

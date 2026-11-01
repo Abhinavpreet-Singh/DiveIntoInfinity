@@ -36,24 +36,27 @@ export function InfinitySymbol({
   );
 }
 
-/** Must stay identical to the `.orbiter` offset-path in globals.css. */
-const CORE_PATH =
+/** Outer loop. The travelling highlight runs on this one. */
+const OUTER_PATH =
   "M150 55 C85 55 40 100 40 150 C40 200 85 245 150 245 C215 245 255 185 300 150 C345 115 385 55 450 55 C515 55 560 100 560 150 C560 200 515 245 450 245 C385 245 345 185 300 150 C255 115 215 55 150 55 Z";
 
-/**
- * Three bodies in orbit, at different speeds and phases, travelling the
- * infinity loop forever. Each is a bright core inside a soft halo, with a
- * tapered wake behind it that rotates to follow the direction of travel.
- */
-const ORBITERS = [
-  { duration: 18, delay: 0, rest: "10%", r: 4.2, halo: 11, wake: 26, opacity: 1 },
-  { duration: 26, delay: -9, rest: "46%", r: 2.8, halo: 7.5, wake: 18, opacity: 0.6 },
-  { duration: 34, delay: -21, rest: "78%", r: 2, halo: 5.5, wake: 13, opacity: 0.4 },
-];
+/** Inner counter loop, sitting just inside the outer one. */
+const INNER_PATH =
+  "M150 72 C97 72 62 109 62 150 C62 191 97 228 150 228 C209 228 247 179 300 150 C353 121 391 72 450 72 C503 72 538 109 538 150 C538 191 503 228 450 228 C391 228 353 179 300 150 C247 121 209 72 150 72 Z";
+
+/** Both paths are normalised to this length, so dash values read as a share
+ * of the loop and the keyframes stay plain, interpolatable numbers. */
+const PATH_LEN = 1000;
+
+/** Length of the travelling segment, as a share of the loop. */
+const SEGMENT = 110;
+
+/** When both loops have finished drawing: 3.4s draw plus the inner delay. */
+const DRAW_TOTAL = 3.85;
 
 /**
- * The hero centrepiece. The core path draws itself in, a light pulse runs
- * the loop, three bodies orbit it, and everything is ink on paper with no hue.
+ * The hero mark: two infinity lines, with a single brighter segment gliding
+ * around the outer one forever. Nothing else.
  */
 export function InfinityHeroGraphic({ className }: { className?: string }) {
   return (
@@ -67,124 +70,49 @@ export function InfinityHeroGraphic({ className }: { className?: string }) {
         viewBox="0 0 600 300"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="relative w-full h-auto text-[var(--ink)]"
+        className="relative h-auto w-full text-[var(--ink)]"
         aria-hidden="true"
       >
-        <defs>
-          <linearGradient id="inf-fade" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.12" />
-            <stop offset="50%" stopColor="currentColor" stopOpacity="0.95" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0.12" />
-          </linearGradient>
-
-          <linearGradient id="inf-pulse" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0" />
-            <stop offset="50%" stopColor="currentColor" stopOpacity="1" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-          </linearGradient>
-
-          {/* Wake: solid at the body, vanishing behind it */}
-          <linearGradient id="inf-wake" x1="100%" y1="0%" x2="0%" y2="0%">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-          </linearGradient>
-
-          <radialGradient id="inf-halo">
-            <stop offset="0%" stopColor="currentColor" stopOpacity="0.32" />
-            <stop offset="60%" stopColor="currentColor" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-          </radialGradient>
-        </defs>
-
-        {/* Reference geometry */}
-        <g stroke="currentColor" opacity="0.14">
-          <circle cx="150" cy="150" r="118" strokeDasharray="2 8" />
-          <circle cx="450" cy="150" r="118" strokeDasharray="2 8" />
-          <circle cx="300" cy="150" r="148" strokeDasharray="1 10" />
-          <line x1="300" y1="4" x2="300" y2="296" strokeDasharray="4 7" />
-          <line x1="12" y1="150" x2="588" y2="150" strokeDasharray="4 7" />
-        </g>
-
-        {/* Echo */}
+        {/* Outer loop, drawn in on load */}
         <path
-          d="M150 40 C75 40 20 95 20 150 C20 205 75 260 150 260 C220 260 265 195 300 150 C335 105 380 40 450 40 C525 40 580 95 580 150 C580 205 525 260 450 260 C380 260 335 195 300 150 C265 105 220 40 150 40 Z"
+          d={OUTER_PATH}
           stroke="currentColor"
-          strokeWidth="1"
-          strokeDasharray="2 7"
-          opacity="0.22"
-        />
-
-        {/* Core, which draws itself in */}
-        <path
-          d={CORE_PATH}
-          stroke="url(#inf-fade)"
-          strokeWidth="2"
+          strokeWidth="1.75"
           strokeLinecap="round"
           strokeLinejoin="round"
-          strokeDasharray="2600"
+          opacity="0.3"
+          pathLength={PATH_LEN}
+          strokeDasharray={PATH_LEN}
           className="animate-draw"
         />
 
-        {/* Travelling pulse along the stroke */}
+        {/* Inner loop, following a beat behind */}
         <path
-          d={CORE_PATH}
-          stroke="url(#inf-pulse)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          strokeDasharray="70 2530"
-          className="animate-trace"
-          opacity="0.8"
-        />
-
-        {/* Inner counter loop */}
-        <path
-          d="M150 72 C97 72 62 109 62 150 C62 191 97 228 150 228 C209 228 247 179 300 150 C353 121 391 72 450 72 C503 72 538 109 538 150 C538 191 503 228 450 228 C391 228 353 179 300 150 C247 121 209 72 150 72 Z"
+          d={INNER_PATH}
           stroke="currentColor"
-          strokeWidth="1"
-          opacity="0.3"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.2"
+          pathLength={PATH_LEN}
+          strokeDasharray={PATH_LEN}
+          className="animate-draw"
+          style={{ animationDelay: "350ms" }}
         />
 
-        {/* Orbiting bodies */}
-        {ORBITERS.map((o, i) => (
-          <g
-            key={i}
-            className="orbiter"
-            style={
-              {
-                "--orbit-duration": `${o.duration}s`,
-                "--orbit-delay": `${o.delay}s`,
-                // Where each body rests when the animation is off for
-                // reduced-motion visitors; the animation overrides it.
-                offsetDistance: o.rest,
-              } as React.CSSProperties
-            }
-            opacity={o.opacity}
-          >
-            {/* Wake trails behind, along the local -x axis */}
-            <path
-              d={`M0 0 L-${o.wake} -${o.r * 0.72} L-${o.wake} ${o.r * 0.72} Z`}
-              fill="url(#inf-wake)"
-            />
-            <circle r={o.halo} fill="url(#inf-halo)" />
-            <circle r={o.r} fill="currentColor" />
-          </g>
-        ))}
-
-        {/* Focal nodes */}
-        <circle cx="150" cy="55" r="3" fill="currentColor" />
-        <circle cx="450" cy="245" r="3" fill="currentColor" />
-
-        {/* Technical annotations */}
-        <g
-          fill="currentColor"
-          opacity="0.4"
-          fontSize="8.5"
-          fontFamily="monospace"
-          letterSpacing="1.2"
-        >
-          <text x="20" y="288">DEPTH ∞ · NO FLOOR</text>
-          <text x="452" y="26">STUDIO REF · DI-26</text>
-        </g>
+        {/* The travelling line, on the outer loop. It holds off until both
+            loops have finished drawing themselves in. */}
+        <path
+          d={OUTER_PATH}
+          stroke="currentColor"
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          pathLength={PATH_LEN}
+          strokeDasharray={`${SEGMENT} ${PATH_LEN - SEGMENT}`}
+          className="trace-line"
+          style={{ "--trace-delay": `${DRAW_TOTAL}s` } as React.CSSProperties}
+        />
       </svg>
     </div>
   );

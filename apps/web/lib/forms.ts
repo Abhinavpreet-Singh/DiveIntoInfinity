@@ -1,13 +1,12 @@
 /**
  * Formspree form integration.
  *
- * Formspree endpoints are designed to be embedded directly in static HTML
- * forms, so the endpoint id is safe to ship to the client (it is not a
- * secret). Override per-environment with NEXT_PUBLIC_FORMSPREE_ENDPOINT if a
- * different form is needed without a code change.
+ * The endpoint is configured via the NEXT_PUBLIC_FORMSPREE_ENDPOINT env var
+ * (see .env.example / .env.local). Formspree endpoints are designed to be
+ * embedded directly in static HTML forms, so the endpoint id is safe to ship
+ * to the client (it is not a secret).
  */
-export const FORMSPREE_ENDPOINT =
-  process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "https://formspree.io/f/moeepqvg";
+export const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
 export interface FormspreeResult {
   ok: boolean;
@@ -31,6 +30,13 @@ export async function submitToFormspree(
 ): Promise<FormspreeResult> {
   const body: Record<string, unknown> = { ...payload };
   if (subject) body._subject = subject;
+
+  if (!FORMSPREE_ENDPOINT) {
+    return {
+      ok: false,
+      message: "This form isn't configured yet. Please email us directly instead.",
+    };
+  }
 
   try {
     const res = await fetch(FORMSPREE_ENDPOINT, {

@@ -140,7 +140,9 @@ export default async function CaseStudyPage({ params }: PageProps) {
                 <Block title="Overview" body={project.description} />
                 <Block title="The Challenge" body={project.challenge} />
                 <Block title="The Solution" body={project.solution} />
-                <Block title="Outcome & Impact" body={project.outcome} />
+                {project.outcome && (
+                  <Block title="Outcome & Impact" body={project.outcome} />
+                )}
 
                 {/* Key features list */}
                 <div>

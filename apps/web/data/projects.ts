@@ -16,6 +16,9 @@ export interface Project {
   description: string;
   challenge: string;
   solution: string;
+  /** Optional: what shipping it changed. Omitted until there is something
+   *  real to report, rather than an invented result. */
+  outcome?: string;
   deliverables: string[];
   technologies: string[];
   highlights: ProjectHighlight[];

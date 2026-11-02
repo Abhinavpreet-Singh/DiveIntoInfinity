@@ -1,0 +1,15 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "pratham",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "dev": "node src/index.ts"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}

@@ -1,0 +1,379 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DiveintoInfinity — monochrome design system
+   Ink (#14120B) and Firi white (#F7F7F4). No hue, ever.
+   Light and dark are the same system, inverted.
+   ============================================================ */
+
+@theme {
+  --color-ink: #14120b;
+  --color-firi: #f7f7f4;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --animate-drift: drift 26s ease-in-out infinite;
+  --animate-drift-slow: drift 40s ease-in-out infinite;
+  --animate-breathe: breathe 8s ease-in-out infinite;
+  --animate-draw: draw 3.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  --animate-trace: trace 12s linear infinite;
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-sheen: sheen 3.5s ease-in-out infinite;
+}
+
+/* ---------------- Tokens ---------------- */
+
+:root,
+:root[data-theme="light"] {
+  --bg: #f7f7f4;
+  --bg-2: #f1f0ea;
+  --surface: #ffffff;
+  --surface-2: #faf9f6;
+  --line: #e3e2dc;
+  --line-soft: #ededE6;
+  --line-strong: #cfcec6;
+  --ink: #14120b;
+  --body: #3a382f;
+  --muted: #6b6962;
+  --dim: #9a988e;
+  --inv-bg: #14120b;
+  --inv-ink: #f7f7f4;
+  --grain-opacity: 0.035;
+  --veil: rgba(20, 18, 11, 0.06);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #14120b;
+  --bg-2: #100e08;
+  --surface: #1b1912;
+  --surface-2: #201e16;
+  --line: #2c2a22;
+  --line-soft: #221f18;
+  --line-strong: #413e34;
+  --ink: #f7f7f4;
+  --body: #cfcdc4;
+  --muted: #918f86;
+  --dim: #65635b;
+  --inv-bg: #f7f7f4;
+  --inv-ink: #14120b;
+  --grain-opacity: 0.05;
+  --veil: rgba(247, 247, 244, 0.07);
+  color-scheme: dark;
+}
+
+/* Dark is opt-in only — the OS preference does not flip the site.
+   Light is the default everywhere; the navigation toggle sets
+   [data-theme="dark"] explicitly. */
+
+/* ---------------- Base ---------------- */
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+::selection {
+  background-color: var(--ink);
+  color: var(--bg);
+}
+
+/* ---------------- Keyframes ---------------- */
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.06);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* Both paths carry pathLength="1000", so these plain numbers are a share of
+   the loop rather than user units, and both values interpolate cleanly. */
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Exactly one lap per cycle, so the segment never jumps at the wrap. Opacity
+   is kept out of it, otherwise the line would blink once per lap. */
+@keyframes trace {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes trace-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes sheen {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: var(--p-opacity, 0.4);
+  }
+  100% {
+    transform: translateY(-112vh) translateX(var(--p-drift, 14px));
+    opacity: 0;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 26px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------- Utilities ---------------- */
+
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: var(--grain-blend, multiply);
+}
+
+:root[data-theme="dark"] .grain {
+  --grain-blend: screen;
+}
+
+.trace-line {
+  opacity: 0;
+  animation:
+    trace var(--trace-duration, 12s) linear var(--trace-delay, 0s) infinite,
+    trace-in 0.9s ease-out var(--trace-delay, 0s) forwards;
+}
+
+.grid-field {
+  background-image:
+    linear-gradient(to right, var(--veil) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--veil) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(85% 70% at 50% 40%, #000 0%, transparent 100%);
+}
+
+.depth-vignette {
+  background: radial-gradient(100% 60% at 50% 0%, var(--veil) 0%, transparent 62%);
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line-strong), transparent);
+}
+
+/* Key words: ink fading into muted — mono, never a hue */
+.lumen-text {
+  background: linear-gradient(100deg, var(--ink) 0%, var(--ink) 38%, var(--muted) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Outlined display type, used for emphasis */
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+
+.panel {
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  transition: background-color 0.5s ease, border-color 0.45s ease;
+}
+
+.panel-hover {
+  transition:
+    border-color 0.45s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.45s ease,
+    background-color 0.45s ease;
+}
+
+.panel-hover:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-4px);
+  box-shadow: 0 28px 60px -34px rgba(20, 18, 11, 0.45);
+}
+
+:root[data-theme="dark"] .panel-hover:hover {
+  box-shadow: 0 28px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+.particle {
+  position: absolute;
+  bottom: -10vh;
+  border-radius: 9999px;
+  background: var(--ink);
+  animation: rise var(--p-duration, 28s) linear infinite;
+  animation-delay: var(--p-delay, 0s);
+  will-change: transform, opacity;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* ---------------- Scroll reveal ---------------- */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Character-by-character headline reveal */
+.char {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.5em, 0) rotate(2deg);
+  animation: reveal-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--char-delay, 0ms);
+}
+
+/* ---------------- Links & underlines ---------------- */
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+
+/* ---------------- Marquee ---------------- */
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: var(--animate-marquee);
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* ---------------- Scrollbar ---------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+  border: 3px solid var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /* Travel, repetition and entrance effects are dropped entirely. */
+  .particle,
+  .marquee-track,
+  .char,
+  .animate-drift,
+  .animate-drift-slow,
+  .animate-breathe,
+  .animate-ping,
+  .animate-pulse {
+    animation: none !important;
+  }
+
+  .char {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* The hero mark keeps its single travelling line, deliberately. It is slow,
+     continuous and never triggered by interaction, so it stays at full speed
+     while every other travelling and entrance effect above is removed. */
+}

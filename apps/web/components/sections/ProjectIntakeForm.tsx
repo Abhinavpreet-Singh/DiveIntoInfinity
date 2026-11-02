@@ -398,7 +398,6 @@ export function ProjectIntakeForm() {
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
               <Button
                 href={siteConfig.schedulingUrl}
-                external
                 size="lg"
                 icon={<Calendar className="h-4 w-4" />}
                 iconPosition="left"
@@ -1137,15 +1136,13 @@ export function ProjectIntakeForm() {
                 <p className="mt-2 text-xs leading-relaxed text-[var(--muted)]">
                   If you’d rather talk through requirements live with our studio team, book directly onto our calendar.
                 </p>
-                <a
+                <Link
                   href={siteConfig.schedulingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ink)] transition-colors hover:opacity-75"
                 >
                   Schedule 20-min session
                   <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

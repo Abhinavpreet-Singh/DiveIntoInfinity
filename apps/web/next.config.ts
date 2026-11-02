@@ -32,6 +32,15 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  // Proxy all /api/server/* calls to the Express backend (apps/server), so the
+  // browser talks same-origin and we avoid cross-origin cookie/CORS concerns.
+  // Set API_URL to your deployed server URL in production.
+  async rewrites() {
+    const api = process.env.API_URL ?? "http://localhost:3000";
+    return {
+      beforeFiles: [{ source: "/api/server/:path*", destination: `${api}/:path*` }],
+    };
+  },
 };
 
 export default nextConfig;

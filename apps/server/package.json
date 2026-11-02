@@ -7,9 +7,23 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "dev": "node src/index.ts"
+    "dev": "node --env-file=.env src/index.ts",
+    "start": "node --env-file=.env src/index.ts",
+    "google-token": "node --env-file=.env scripts/get-google-token.mjs"
   },
   "dependencies": {
-    "express": "^5.3.0"
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "googleapis": "^189.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "luxon": "^3.7.2",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/luxon": "^3.7.6",
+    "@types/pg": "^8.23.1"
   }
 }

@@ -61,7 +61,6 @@ export function Hero() {
               </Button>
               <Button
                 href={siteConfig.schedulingUrl}
-                external
                 size="lg"
                 variant="secondary"
                 icon={<CalendarDays className="h-4 w-4" />}

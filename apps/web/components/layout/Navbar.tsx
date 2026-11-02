@@ -8,11 +8,24 @@ import { InfinitySymbol } from "@/components/ui/InfinitySymbol";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      const u = await getCurrentUser();
+      if (alive) setIsAdmin(u?.role === "admin");
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -79,6 +92,14 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  className="rounded-full px-4 py-2 text-sm font-semibold text-[var(--ink)] transition-colors duration-200 hover:bg-[var(--surface-2)]"
+                >
+                  Admin
+                </Link>
+              )}
             </div>
 
             <div className="flex items-center gap-2">
@@ -201,6 +222,17 @@ export function Navbar() {
             >
               Start a project
             </Button>
+            {isAdmin && (
+              <Button
+                href="/admin"
+                size="lg"
+                variant="secondary"
+                className="w-full"
+                onClick={() => setOpen(false)}
+              >
+                Admin
+              </Button>
+            )}
             <a
               href={`mailto:${siteConfig.email}`}
               className="block text-center text-sm text-[var(--muted)] transition-colors hover:text-[var(--ink)]"

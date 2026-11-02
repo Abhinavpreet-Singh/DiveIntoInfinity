@@ -16,6 +16,7 @@ export interface Project {
   description: string;
   challenge: string;
   solution: string;
+  outcome?: string;
   deliverables: string[];
   technologies: string[];
   highlights: ProjectHighlight[];

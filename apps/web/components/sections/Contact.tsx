@@ -13,6 +13,14 @@ import {
 import { siteConfig } from "@/data/site";
 import { Container } from "@/components/ui/Container";
 import { ParticleField } from "@/components/ui/Atmosphere";
+import { submitToFormspree } from "@/lib/forms";
+import { cn } from "@/lib/utils";
+import {
+  CURRENCY_OPTIONS,
+  convertAmount,
+  formatCurrency,
+  type CurrencyCode,
+} from "@/lib/currency";
 
 const PROJECT_TYPES = [
   "Web platform or application",
@@ -23,21 +31,25 @@ const PROJECT_TYPES = [
   "Not sure yet",
 ];
 
-const BUDGETS = [
-  "Under $5,000",
-  "$5,000 – $10,000",
-  "$10,000 – $25,000",
-  "$25,000 – $50,000",
-  "$50,000+",
-  "Still deciding",
-];
+interface ContactForm {
+  name: string;
+  email: string;
+  company: string;
+  phone: string;
+  websiteType: string;
+  budget: string;
+  currency: CurrencyCode;
+  message: string;
+}
 
-const INITIAL = {
+const INITIAL: ContactForm = {
   name: "",
   email: "",
   company: "",
+  phone: "",
   websiteType: PROJECT_TYPES[0],
-  budget: BUDGETS[1],
+  budget: "",
+  currency: "USD",
   message: "",
 };
 
@@ -52,6 +64,20 @@ export function Contact() {
   ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (status === "error") setStatus("idle");
+  };
+
+  // Convert the typed budget amount when the user switches currencies so the
+  // displayed price stays consistent.
+  const handleCurrencyChange = (code: CurrencyCode) => {
+    setFormData((prev) => {
+      if (prev.currency === code) return prev;
+      const numeric = Number(prev.budget);
+      const converted =
+        prev.budget && !Number.isNaN(numeric)
+          ? String(Math.round(convertAmount(numeric, prev.currency, code)))
+          : "";
+      return { ...prev, currency: code, budget: converted };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,22 +106,22 @@ export function Contact() {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const result = await submitToFormspree(
+        {
+          ...formData,
+          budget: formatCurrency(formData.budget, formData.currency),
+          source: "Contact Section Form (Homepage)",
+        },
+        `New enquiry from ${formData.name}`
+      );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || "Unable to send that. Please try again.");
+      if (!result.ok) {
+        throw new Error(result.message || "Unable to send that. Please try again.");
       }
 
       setStatus("success");
       setSuccessMessage(
-        data.message ||
-          "Got it. We read every enquiry ourselves and reply within two working days."
+        "Got it. We read every enquiry ourselves and reply within two working days."
       );
       setFormData(INITIAL);
     } catch (err: unknown) {
@@ -255,7 +281,7 @@ export function Contact() {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
+                <div>
                   <label htmlFor="company" className={labelClass}>
                     Company or organisation
                   </label>
@@ -271,9 +297,30 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="websiteType" className={labelClass}>
-                    What are we building?
+                  <label htmlFor="phone" className={labelClass}>
+                    Phone number <span className="opacity-60">(optional)</span>
                   </label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 98765 43210"
+                    className={fieldClass}
+                    autoComplete="tel"
+                  />
+                </div>
+
+                <div>
+                  <div className="mb-2 flex min-h-[2rem] items-center">
+                    <label
+                      htmlFor="websiteType"
+                      className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--dim)]"
+                    >
+                      What are we building?
+                    </label>
+                  </div>
                   <select
                     id="websiteType"
                     name="websiteType"
@@ -289,23 +336,74 @@ export function Contact() {
                   </select>
                 </div>
 
+                {/* Budget — Currency toggle + amount input */}
                 <div>
-                  <label htmlFor="budget" className={labelClass}>
-                    Budget range
-                  </label>
-                  <select
-                    id="budget"
-                    name="budget"
-                    value={formData.budget}
-                    onChange={handleChange}
-                    className={fieldClass}
-                  >
-                    {BUDGETS.map((budget) => (
-                      <option key={budget} value={budget} className="bg-[var(--surface)]">
-                        {budget}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="mb-2 flex min-h-[2rem] items-center justify-between gap-3">
+                    <label
+                      htmlFor="budget"
+                      className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--dim)]"
+                    >
+                      Budget
+                    </label>
+                    <div
+                      role="group"
+                      aria-label="Select currency"
+                      className="inline-flex shrink-0 rounded-full border border-[var(--line)] bg-[var(--bg)] p-0.5"
+                    >
+                      {CURRENCY_OPTIONS.map((c) => {
+                        const active = formData.currency === c.code;
+                        return (
+                          <button
+                            key={c.code}
+                            type="button"
+                            onClick={() => handleCurrencyChange(c.code)}
+                            aria-pressed={active}
+                            className={cn(
+                              "rounded-full px-3 py-1 text-xs font-semibold transition-all",
+                              active
+                                ? "bg-[var(--ink)] text-[var(--bg)] shadow-sm"
+                                : "text-[var(--muted)] hover:text-[var(--ink)]"
+                            )}
+                          >
+                            {c.symbol} {c.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--dim)]">
+                      {CURRENCY_OPTIONS.find((c) => c.code === formData.currency)?.symbol}
+                    </span>
+                    <input
+                      id="budget"
+                      name="budget"
+                      type="number"
+                      min={0}
+                      step="any"
+                      inputMode="decimal"
+                      value={formData.budget}
+                      onChange={handleChange}
+                      placeholder={formData.currency === "INR" ? "e.g. 4,15,000" : "e.g. 5,000"}
+                      aria-label="Budget amount"
+                      className={`${fieldClass} pl-9 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+                    />
+                  </div>
+                  {formData.budget && !Number.isNaN(Number(formData.budget)) && (
+                    <p className="mt-2 text-xs text-[var(--dim)]">
+                      ≈{" "}
+                      {formatCurrency(
+                        String(
+                          convertAmount(
+                            Number(formData.budget),
+                            formData.currency,
+                            formData.currency === "USD" ? "INR" : "USD"
+                          )
+                        ),
+                        formData.currency === "USD" ? "INR" : "USD"
+                      )}
+                    </p>
+                  )}
                 </div>
 
                 <div className="sm:col-span-2">

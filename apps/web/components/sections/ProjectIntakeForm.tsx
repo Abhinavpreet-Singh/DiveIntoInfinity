@@ -30,6 +30,13 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ParticleField } from "@/components/ui/Atmosphere";
 import { cn } from "@/lib/utils";
+import { submitToFormspree } from "@/lib/forms";
+import {
+  CURRENCY_OPTIONS,
+  convertAmount,
+  formatCurrency,
+  type CurrencyCode,
+} from "@/lib/currency";
 
 // --- Form Options & Constants ---
 
@@ -154,6 +161,7 @@ export interface ProjectFormData {
   // Step 4: Timeline & Investment
   timeline: string;
   budget: string;
+  currency: CurrencyCode;
 
   // Step 5: Contact Information
   name: string;
@@ -178,7 +186,8 @@ const INITIAL_FORM: ProjectFormData = {
   referenceLinks: "",
   assetLinks: "",
   timeline: TIMELINE_OPTIONS[1].id,
-  budget: BUDGET_OPTIONS[2].label,
+  budget: "",
+  currency: "USD",
   name: "",
   email: "",
   company: "",
@@ -224,6 +233,20 @@ export function ProjectIntakeForm() {
         ? prev.features.filter((f) => f !== tag)
         : [...prev.features, tag];
       return { ...prev, features };
+    });
+  };
+
+  // Convert the typed budget amount when the user switches currencies so the
+  // displayed price stays consistent ("show the price accordingly").
+  const handleCurrencyChange = (code: CurrencyCode) => {
+    setFormData((prev) => {
+      if (prev.currency === code) return prev;
+      const numeric = Number(prev.budget);
+      const converted =
+        prev.budget && !Number.isNaN(numeric)
+          ? String(Math.round(convertAmount(numeric, prev.currency, code)))
+          : "";
+      return { ...prev, currency: code, budget: converted };
     });
   };
 
@@ -297,7 +320,8 @@ export function ProjectIntakeForm() {
         websiteType: formData.platforms
           .map((p) => PLATFORM_OPTIONS.find((opt) => opt.id === p)?.label || p)
           .join(", "),
-        budget: formData.budget,
+        budget: formatCurrency(formData.budget, formData.currency),
+        currency: formData.currency,
         projectName: formData.projectName,
         projectStage:
           PROJECT_STAGES.find((s) => s.id === formData.projectStage)?.title ||
@@ -324,16 +348,13 @@ export function ProjectIntakeForm() {
         source: "Detailed Project Intake Page (/start)",
       };
 
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const result = await submitToFormspree(
+        payload,
+        `New Project Brief: "${formData.projectName}" by ${formData.name}`
+      );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Unable to submit project brief. Please try again.");
+      if (!result.ok) {
+        throw new Error(result.message || "Unable to submit project brief. Please try again.");
       }
 
       setStatus("success");
@@ -864,37 +885,71 @@ export function ProjectIntakeForm() {
                     </div>
                   </div>
 
-                  {/* Budget */}
+                  {/* Budget — Currency toggle + amount input */}
                   <div className="space-y-3">
-                    <label className="block text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink)]">
-                      Anticipated Investment Budget
-                    </label>
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      {BUDGET_OPTIONS.map((b) => {
-                        const selected = formData.budget === b.label;
-                        return (
-                          <button
-                            key={b.id}
-                            type="button"
-                            onClick={() => updateField("budget", b.label)}
-                            className={cn(
-                              "rounded-2xl border p-4 text-left transition-all",
-                              selected
-                                ? "border-[var(--ink)] bg-[var(--surface-2)] ring-1 ring-[var(--ink)]"
-                                : "border-[var(--line)] bg-[var(--surface)] hover:border-[var(--line-strong)]"
-                            )}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-semibold text-[var(--ink)]">
-                                {b.label}
-                              </span>
-                              {selected && <Check className="h-4 w-4 text-[var(--ink)]" />}
-                            </div>
-                            <p className="mt-1 text-xs text-[var(--muted)]">{b.desc}</p>
-                          </button>
-                        );
-                      })}
+                    <div className="flex items-center justify-between gap-3">
+                      <label className="block text-xs font-semibold uppercase tracking-[0.14em] text-[var(--ink)]">
+                        Anticipated Investment Budget
+                      </label>
+                      {/* Currency toggle */}
+                      <div
+                        role="group"
+                        aria-label="Select currency"
+                        className="inline-flex shrink-0 rounded-full border border-[var(--line)] bg-[var(--surface)] p-0.5"
+                      >
+                        {CURRENCY_OPTIONS.map((c) => {
+                          const active = formData.currency === c.code;
+                          return (
+                            <button
+                              key={c.code}
+                              type="button"
+                              onClick={() => handleCurrencyChange(c.code)}
+                              aria-pressed={active}
+                              className={cn(
+                                "rounded-full px-3 py-1 text-xs font-semibold transition-all",
+                                active
+                                  ? "bg-[var(--ink)] text-[var(--bg)] shadow-sm"
+                                  : "text-[var(--muted)] hover:text-[var(--ink)]"
+                              )}
+                            >
+                              {c.symbol} {c.label}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
+                    <div className="relative">
+                      <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--dim)]">
+                        {CURRENCY_OPTIONS.find((c) => c.code === formData.currency)?.symbol}
+                      </span>
+                      <input
+                        type="number"
+                        min={0}
+                        step="any"
+                        inputMode="decimal"
+                        value={formData.budget}
+                        onChange={(e) => updateField("budget", e.target.value)}
+                        placeholder={formData.currency === "INR" ? "e.g. 4,15,000" : "e.g. 5,000"}
+                        aria-label="Budget amount"
+                        className="w-full rounded-xl border border-[var(--line)] bg-[var(--surface)] py-3.5 pl-9 pr-4 text-sm text-[var(--ink)] placeholder:text-[var(--dim)] transition-colors focus:border-[var(--ink)] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      />
+                    </div>
+                    {/* Live equivalent in the other currency */}
+                    {formData.budget && !Number.isNaN(Number(formData.budget)) && (
+                      <p className="text-xs text-[var(--muted)]">
+                        ≈{" "}
+                        {formatCurrency(
+                          String(
+                            convertAmount(
+                              Number(formData.budget),
+                              formData.currency,
+                              formData.currency === "USD" ? "INR" : "USD"
+                            )
+                          ),
+                          formData.currency === "USD" ? "INR" : "USD"
+                        )}
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
@@ -1116,7 +1171,7 @@ export function ProjectIntakeForm() {
                   <div>
                     <span className="text-[var(--dim)]">Estimated Budget:</span>
                     <p className="mt-0.5 font-semibold text-[var(--ink)]">
-                      {formData.budget}
+                      {formatCurrency(formData.budget, formData.currency)}
                     </p>
                   </div>
                 </div>

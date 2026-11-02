@@ -115,28 +115,6 @@ export function Navbar() {
           />
         </div>
 
-        {/* Curved lower edge, visible once the bar has a background */}
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 1440 40"
-          preserveAspectRatio="none"
-          className={cn(
-            "block h-[22px] w-full transition-opacity duration-500 sm:h-[30px]",
-            scrolled ? "opacity-100" : "opacity-0"
-          )}
-        >
-          <path
-            d="M0 0H1440V2C1080 34 820 40 720 40C620 40 360 34 0 2V0Z"
-            fill="var(--bg)"
-            fillOpacity="0.85"
-          />
-          <path
-            d="M0 2C360 34 620 40 720 40C820 40 1080 34 1440 2"
-            fill="none"
-            stroke="var(--line)"
-            strokeWidth="1"
-          />
-        </svg>
       </header>
 
       {/* Mobile drawer */}

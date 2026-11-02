@@ -42,6 +42,6 @@ export const faqs: Faq[] = [
   {
     question: "How do we start?",
     answer:
-      "Send us a note describing what you want to build and roughly when. We reply within two working days, and the first call is a conversation about the problem, not a sales pitch.",
+      "Send us a note describing what you want to build and roughly when. We reply within an hour during working hours, and the first call is a conversation about the problem, not a sales pitch.",
   },
 ];

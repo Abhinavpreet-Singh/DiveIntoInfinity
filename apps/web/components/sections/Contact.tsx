@@ -22,6 +22,7 @@ import {
   CURRENCY_OPTIONS,
   convertAmount,
   formatCurrency,
+  formatBudgetForSubmission,
   type CurrencyCode,
 } from "@/lib/currency";
 
@@ -61,6 +62,20 @@ export function Contact() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Sensibly default to INR for visitors in India while keeping USD for international visitors.
+  React.useEffect(() => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (tz === "Asia/Kolkata" || tz === "Asia/Calcutta") {
+        setFormData((prev) =>
+          prev.currency === "USD" && !prev.budget ? { ...prev, currency: "INR" } : prev
+        );
+      }
+    } catch {
+      // Ignore if Intl timezone detection is unavailable
+    }
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -109,10 +124,23 @@ export function Contact() {
     setErrorMessage("");
 
     try {
+      const budgetFormatted = formatBudgetForSubmission(formData.budget, formData.currency);
+      // Append budget to message so standard email templates always display it clearly
+      const messageWithBudget = formData.budget
+        ? `${formData.message.trim()}\n\n---\nEstimated Budget: ${budgetFormatted}`
+        : formData.message;
+
+      // Omit `currency` as a reserved root keyword to avoid triggering Formspree's
+      // Stripe/payment plugin validation (which defaults to USD and fails on non-USD codes).
+      // Instead provide `budgetCurrency` alongside the ASCII-safe `budget` string.
+      const { currency: _reservedCurrency, ...restFormData } = formData;
+
       const result = await submitToFormspree(
         {
-          ...formData,
-          budget: formatCurrency(formData.budget, formData.currency),
+          ...restFormData,
+          budget: budgetFormatted,
+          budgetCurrency: formData.currency,
+          message: messageWithBudget,
           source: "Contact Section Form (Homepage)",
         },
         `New enquiry from ${formData.name}`

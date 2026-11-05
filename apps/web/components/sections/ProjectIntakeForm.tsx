@@ -35,6 +35,7 @@ import {
   CURRENCY_OPTIONS,
   convertAmount,
   formatCurrency,
+  formatBudgetForSubmission,
   type CurrencyCode,
 } from "@/lib/currency";
 
@@ -211,6 +212,20 @@ export function ProjectIntakeForm() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Sensibly default to INR for visitors in India while keeping USD for international visitors.
+  React.useEffect(() => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (tz === "Asia/Kolkata" || tz === "Asia/Calcutta") {
+        setFormData((prev) =>
+          prev.currency === "USD" && !prev.budget ? { ...prev, currency: "INR" } : prev
+        );
+      }
+    } catch {
+      // Ignore if Intl timezone detection is unavailable
+    }
+  }, []);
+
   const updateField = <K extends keyof ProjectFormData>(field: K, value: ProjectFormData[K]) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (status === "error") setErrorMessage("");
@@ -309,7 +324,49 @@ export function ProjectIntakeForm() {
     setErrorMessage("");
 
     try {
-      // Map form data to API payload
+      const budgetFormatted = formatBudgetForSubmission(formData.budget, formData.currency);
+      const platformsList = formData.platforms
+        .map((p) => PLATFORM_OPTIONS.find((opt) => opt.id === p)?.label || p)
+        .join(", ");
+      const stageTitle =
+        PROJECT_STAGES.find((s) => s.id === formData.projectStage)?.title ||
+        formData.projectStage;
+      const timelineTitle =
+        TIMELINE_OPTIONS.find((t) => t.id === formData.timeline)?.label ||
+        formData.timeline;
+      const designTitle =
+        DESIGN_OPTIONS.find((d) => d.id === formData.designStatus)?.label ||
+        formData.designStatus;
+
+      // Construct a structured overview inside message so that standard Formspree email
+      // templates reliably include all critical brief details, including budget.
+      const messageBody = [
+        `PROJECT OVERVIEW`,
+        `Project Name: ${formData.projectName}`,
+        `Stage: ${stageTitle}`,
+        formData.industry ? `Industry: ${formData.industry}` : "",
+        formData.targetAudience ? `Target Audience: ${formData.targetAudience}` : "",
+        ``,
+        `SCOPE & TIMELINE`,
+        `Surfaces: ${platformsList || "Not specified"}`,
+        formData.features.length ? `Features: ${formData.features.join(", ")}` : "",
+        `Design Status: ${designTitle}`,
+        formData.techStackPreference ? `Tech Preferences: ${formData.techStackPreference}` : "",
+        `Timeline: ${timelineTitle}`,
+        `Estimated Budget: ${budgetFormatted}`,
+        ``,
+        `DESCRIPTION`,
+        formData.projectDescription,
+        formData.referenceLinks ? `\nReferences / Links:\n${formData.referenceLinks}` : "",
+        formData.assetLinks ? `\nAsset Links (Figma/Drive):\n${formData.assetLinks}` : "",
+        formData.additionalNotes ? `\nAdditional Notes:\n${formData.additionalNotes}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      // Map form data to API payload.
+      // Notice: `budgetCurrency` is used instead of root `currency` to avoid triggering
+      // Formspree's Stripe/payment plugin validation (which defaults to USD and fails on non-USD codes).
       const payload = {
         name: formData.name,
         email: formData.email,
@@ -317,33 +374,23 @@ export function ProjectIntakeForm() {
         role: formData.role || undefined,
         phone: formData.phone || undefined,
         preferredContact: formData.preferredContact,
-        websiteType: formData.platforms
-          .map((p) => PLATFORM_OPTIONS.find((opt) => opt.id === p)?.label || p)
-          .join(", "),
-        budget: formatCurrency(formData.budget, formData.currency),
-        currency: formData.currency,
+        websiteType: platformsList,
+        budget: budgetFormatted,
+        budgetCurrency: formData.currency,
         projectName: formData.projectName,
-        projectStage:
-          PROJECT_STAGES.find((s) => s.id === formData.projectStage)?.title ||
-          formData.projectStage,
+        projectStage: stageTitle,
         targetAudience: formData.targetAudience,
         industry: formData.industry,
         platforms: formData.platforms.map(
           (p) => PLATFORM_OPTIONS.find((opt) => opt.id === p)?.label || p
         ),
         features: formData.features,
-        designStatus:
-          DESIGN_OPTIONS.find((d) => d.id === formData.designStatus)?.label ||
-          formData.designStatus,
+        designStatus: designTitle,
         techStack: formData.techStackPreference,
         referenceLinks: formData.referenceLinks,
         assetLinks: formData.assetLinks,
-        timeline:
-          TIMELINE_OPTIONS.find((t) => t.id === formData.timeline)?.label ||
-          formData.timeline,
-        message: `Project: ${formData.projectName}\n\nDescription:\n${formData.projectDescription}${
-          formData.additionalNotes ? `\n\nAdditional Notes:\n${formData.additionalNotes}` : ""
-        }`,
+        timeline: timelineTitle,
+        message: messageBody,
         additionalNotes: formData.additionalNotes,
         source: "Detailed Project Intake Page (/start)",
       };

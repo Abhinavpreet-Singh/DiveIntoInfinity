@@ -36,3 +36,27 @@ export function formatCurrency(amount: string, currency: CurrencyCode): string {
     maximumFractionDigits: 0,
   }).format(value);
 }
+
+/**
+ * Format budget for Formspree and email notification payloads.
+ * Includes both ISO currency code and converted equivalent to prevent
+ * encoding issues (e.g. raw ₹ symbol in mailers), avoid Formspree's reserved
+ * payment plugin conflicts, and provide clear context in both currencies.
+ */
+export function formatBudgetForSubmission(
+  amount: string,
+  currency: CurrencyCode
+): string {
+  const value = Number(amount);
+  if (!amount || Number.isNaN(value)) return "Not specified";
+
+  const formatted = formatCurrency(amount, currency);
+  const otherCurrency: CurrencyCode = currency === "USD" ? "INR" : "USD";
+  const convertedValue = Math.round(convertAmount(value, currency, otherCurrency));
+  const convertedFormatted = formatCurrency(String(convertedValue), otherCurrency);
+
+  if (currency === "INR") {
+    return `INR ${value.toLocaleString("en-IN")} (${formatted} ≈ ${convertedFormatted} USD)`;
+  }
+  return `USD ${value.toLocaleString("en-US")} (${formatted} ≈ ${convertedFormatted} INR)`;
+}

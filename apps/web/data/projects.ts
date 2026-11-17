@@ -190,7 +190,60 @@ export const projects: Project[] = [
     ],
     image: "/work/aistem.jpg",
     liveUrl: "https://aistem-website.vercel.app",
-    depth: "410",
+    depth: "380",
+  },
+  {
+    id: "royalcasting",
+    kind: "client",
+    slug: "royalcasting",
+    title: "Royal Casting",
+    client: "Royal Casting",
+    category: "Industrial Foundry Catalogue & B2B Showcase",
+    sector: "Manufacturing · Heavy Metallurgy",
+    business:
+      "A Cast Iron (CI) ingot mould manufacturer established in 2004 in Mandi Gobindgarh, Punjab, serving steel mills and foundries.",
+    year: "2026",
+    platforms: ["Web Platform", "Product Catalogue", "Foundry Desk"],
+    summary:
+      "A modern industrial web presence and technical product catalogue for a Mandi Gobindgarh CI ingot mould foundry supplying iron and steel plants across India.",
+    description:
+      "Royal Casting has manufactured Cast Iron (CI) Ingot Moulds in Mandi Gobindgarh since 2004, supplying iron mills, steelmakers and heavy casting operations. We designed and built their digital presence to showcase their foundry capabilities, six-stage casting workflow, and four core mould series (Standard, Heavy-Duty, Custom Engineered, and Large Format), backed by direct enquiry channels and technical specification sheets.",
+    challenge:
+      "Industrial foundries struggle to communicate metallurgical rigor and heavy manufacturing reliability online. Steel plant buyers need mould geometry, wall thickness details, and direct foundry communication rather than generic sales forms or consumer ecommerce.",
+    solution:
+      "We built an industrial-grade showcase structured around technical credibility: four dedicated mould series with engineering specifications, a transparent 6-stage molten casting workflow, and direct enquiry channels routed to the factory desk via RFQ forms, WhatsApp, and phone.",
+    deliverables: [
+      "Brand positioning & industrial UI design system",
+      "Responsive web platform with foundry visual language",
+      "Categorised mould catalogue (Standard, Heavy-Duty, Custom, Large Format)",
+      "Technical product specification & drawing request pages",
+      "6-stage foundry manufacturing process breakdown",
+      "Direct foundry desk enquiry integration (RFQ, WhatsApp, Email)",
+      "Regional SEO for Mandi Gobindgarh steel & foundry search",
+      "Performance optimisation and static generation on Vercel",
+    ],
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "Lucide Icons",
+      "Vercel",
+    ],
+    highlights: [
+      { label: "Mould series", value: "4" },
+      { label: "Process stages", value: "6" },
+      { label: "Founded in", value: "2004" },
+    ],
+    features: [
+      "Technical catalogue for Standard, Heavy-Duty, Custom and Large Format moulds",
+      "Step-by-step breakdown of the 6-stage molten casting workflow",
+      "Specification-led product detail pages with custom drawing enquiry flows",
+      "Direct foundry desk integration with WhatsApp and email routing",
+      "Mandi Gobindgarh regional foundry positioning and factory location mapping",
+    ],
+    liveUrl: "https://www.royalcasting.in",
+    image: "/work/royalcasting.jpg",
+    depth: "440",
   },
   {
     id: "enum",
@@ -235,7 +288,7 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://enum.live",
     image: "/work/enum.jpg",
-    depth: "460",
+    depth: "500",
   },
   {
     id: "carbone",
@@ -280,7 +333,7 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://carbone360.vercel.app",
     image: "/work/carbone.jpg",
-    depth: "520",
+    depth: "580",
   },
   {
     id: "eventix",
@@ -325,7 +378,7 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://eventix360.app",
     image: "/work/eventix.webp",
-    depth: "640",
+    depth: "680",
   },
   {
     id: "lawgic",

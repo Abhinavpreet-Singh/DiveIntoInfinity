@@ -17,7 +17,7 @@ export function SelectedWork() {
           <Reveal className="max-w-3xl">
             <SectionHeading
               title="Our client projects"
-              description="Three products we designed, built and still support, each live and running a real business."
+              description="Products we designed, built and still support, each live and running a real business."
             />
           </Reveal>
 
